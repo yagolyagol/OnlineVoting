@@ -12,7 +12,7 @@ $role = $_POST['role'];
 
 if($password == $cpassword){
     move_uploaded_file($temp_name,"../uploads/$image ");
-    $insert = mysqli_query($connect, "INSERT INTO user (Name, Mobile, Password, Address,Photo,Role ,Status) VALUES('$name', '$mobile','$address','$password','$image',0,0)");
+    $insert = mysqli_query($connect, "INSERT INTO user (Name, Mobile, Password, Address,Photo,Role ,Status) VALUES('$name', '$mobile','$password','$address','$image',0,0)");
     if($insert){
         echo'
            <script>
