@@ -11,12 +11,12 @@ $temp_name =$_FILES['Photo']['temp_name'];
 $role = $_POST['role'];
 
 if($password == $cpassword){
-    move_uploaded_file($temp_name,"../uploads/$image ");
+    move_uploaded_file($temp_name,"../uploads/$image");
     $insert = mysqli_query($connect, "INSERT INTO user (Name, Mobile, Password, Address,Photo,Role ,Status) VALUES('$name', '$mobile','$password','$address','$image',0,0)");
     if($insert){
         echo'
            <script>
-              alert("Registration Successful");
+              alert("Registration Successful!!");
               window.location = "../";
             </script>
         ';
@@ -30,7 +30,6 @@ if($password == $cpassword){
         ';
     }
 }
-
 else{
     echo'
         <script>
