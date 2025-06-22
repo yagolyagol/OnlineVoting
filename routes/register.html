@@ -14,22 +14,22 @@
       method="post"
       enctype="multipart/form-data"
     >
-      <input type="text" name="Name" placeholder="Name" />
-      <input type="double" name="Moblie" placeholder="Mobile" /><br /><br />
-      <input type="password" name="Password" placeholder="Password" />
+      <input type="text" name="name" placeholder="Name" />
+      <input type="number" name="mobile" placeholder="Mobile" /><br /><br />
+      <input type="password" name="password" placeholder="Password" />
       <input
         type="password"
         name="Cpassword"
         placeholder="Confirm password"
       /><br /><br />
-      <input type="varchar" name="Address" placeholder="Address" /><br /><br />
+      <input type="text" name="address" placeholder="Address" /><br /><br />
       Upload image: <input type="file" name="Photo" /><br /><br />
       Select role:
       <select name="role">
         <option value="1">Voter</option>
         <option value="2">Candidate</option>
       </select>
-      <button>Register</button><br /><br />
+      <button type="submit">Register</button><br /><br />
       Already have an account?<a href="../index.html">Login here.</a>
     </form>
   </body>
