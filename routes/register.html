@@ -40,7 +40,6 @@
       enctype="multipart/form-data"
     >
       <input type="text" name="name" placeholder="Enter First Name" required />
-
       <input
         type="number"
         name="mobile"
@@ -68,8 +67,9 @@
         <div id="role">
           Select role:
           <select name="role">
-            <option value="1">Voter</option>
-            <option value="2">Candidate</option>
+            <option value="voter">Voter</option>
+            <option value="candidate">Candidate</option>
+            <option value="admin">Admin</option>
           </select>
         </div>
       </center>
@@ -78,7 +78,7 @@
         style="
           padding: 10px;
           border-radius: 15px;
-          width: 10%;
+          width: 20%;
           background-color: rebeccapurple;
           color: blanchedalmond;
         "

@@ -1,31 +1,90 @@
-body{
-    text-align: center;
-    background-color: #70a1ff;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-#headerSection{
-    padding: 5px;
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  background: linear-gradient(135deg, #70a1ff, #3742fa);
+  color: #fff;
+  padding: 2rem;
+  min-height: 100vh;
 }
 
-#headerSection h1{
-    font-family: 'Times New Roman', Times, serif;
+/* Header Section */
+#headerSection {
+  margin-bottom: 2rem;
 }
 
-input{
-    padding: 10px;
-    border-radius: 15px;
+#headerSection h1 {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 3rem;
 }
 
-#dropbox{
-    padding: 10px;
-    border-radius: 15px;
-    width: 10%;
+/* Form container */
+form {
+  max-width: 500px;
+  margin: auto;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
 }
 
-#loginbutton{
-    padding: 10px;
-    border-radius: 15px;
-    width: 10%;
-    background-color: rebeccapurple;
-    color: blanchedalmond;
+/* Input fields */
+input, select {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  margin: 10px 0;
+  width: 100%;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+  outline: none;
+  background-color: #f1f2f6;
+  color: #2f3542;
+}
+
+/* Submit button */
+button,
+#loginbutton {
+  padding: 12px;
+  border-radius: 12px;
+  width: 100%;
+  background-color: rebeccapurple;
+  color: blanchedalmond;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover,
+#loginbutton:hover {
+  background-color: indigo;
+}
+
+/* Dropdown box */
+#dropbox {
+  padding: 10px;
+  border-radius: 12px;
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  form {
+    padding: 1rem;
+  }
+
+  #headerSection h1 {
+    font-size: 2rem;
+  }
 }
