@@ -62,7 +62,7 @@ $status = ($userdata['status'] == 0)
     <div id="mainSection">
         <center>
             <div id="headerSection">
-                <a href="../"><button id="backbutton">Back</button></a>
+                <a href="../login.html"><button id="backbutton">Back</button></a>
                 <a href="logout.php"><button id="logoutbutton">Logout</button></a>
                 <h1>Integrity Polls</h1>
             </div>
@@ -82,15 +82,15 @@ $status = ($userdata['status'] == 0)
             <div id="Group">
                 <?php
                 if (!empty($groupsdata)) {
-                    foreach ($groupsdata as $group) {
+                    foreach ($groupsdata as $groups) {
                         ?>
                         <div>
-                            <img style="float: right" src="../uploads/<?php echo $group['photo']; ?>" height="100" width="100">
-                            <b>Group Name:</b> <?php echo $group['name']; ?><br><br>
-                            <b>Votes:</b> <?php echo $group['votes']; ?><br><br>
+                            <img style="float: right" src="../uploads/<?php echo $groups['photo']; ?>" height="100" width="100">
+                            <b>Group Name:</b> <?php echo $groups['name']; ?><br><br>
+                            <b>Votes:</b> <?php echo $groups['votes']; ?><br><br>
                             <form action="../api/vote.php" method="post">
-                                <input type="hidden" name="gvotes" value="<?php echo $group['votes']; ?>">
-                                <input type="hidden" name="gid" value="<?php echo $group['id']; ?>">
+                                <input type="hidden" name="gvotes" value="<?php echo $groups['votes']; ?>">
+                                <input type="hidden" name="gid" value="<?php echo $groups['id']; ?>">
                                 <?php if ($userdata['status'] == 0) { ?>
                                     <input type="submit" name="votebtn" value="Vote" id="votebtn">
                                 <?php } else { ?>
