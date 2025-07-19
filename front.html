@@ -5,46 +5,203 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Integrity Polls</title>
     <link rel="stylesheet" href="front.css" />
+    <style>
+      /* General Body Styles */
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        text-align: center;
+        overflow: hidden; /* Hide scrollbars */
+      } /* Main Welcome
+Container */
+      .welcome-container {
+        max-width: 600px;
+        padding: 40px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px); /*
+For Safari */
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        transform: translateY(20px);
+        opacity: 0;
+        animation: slideUp 0.8s forwards ease-out;
+      }
+      @keyframes slideUp {
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      } /* Icon
+Styles */
+      .icon svg {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 20px;
+        stroke: #fff;
+        stroke-width: 1.5;
+      } /* Typography */
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+      .subtitle {
+        font-size: 1.2rem;
+        font-weight: 300;
+        opacity: 0.9;
+        margin-bottom: 25px;
+      }
+      .description {
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 30px;
+      } /* Call-to-Action Button */
+      .cta-button {
+        display: inline-block;
+        padding: 15px 35px;
+        background-color: #ffffff;
+        color: #667eea;
+        font-size: 1rem;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+      .cta-button:hover {
+        background-color: #f0f0f0;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+      } /* Fade-in
+animation for individual elements */
+      .fade-in {
+        opacity: 0;
+        transform: translateY(15px);
+        animation: fadeInElement 0.6s forwards ease-out;
+      } /*
+Staggering the animation with delays in JavaScript */
+      h1.fade-in {
+        animation-delay: 0.5s;
+      }
+      .subtitle.fade-in {
+        animation-delay: 0.7s;
+      }
+      .description.fade-in {
+        animation-delay: 0.9s;
+      }
+      .cta-button.fade-in {
+        animation-delay: 1.1s;
+      }
+      @keyframes fadeInElement {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      } /* Footer Styling */
+      footer {
+        position: absolute;
+        bottom: 20px;
+        width: 100%;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.7);
+      } /*
+Responsive Design for smaller screens */
+      @media (max-width: 768px) {
+        .welcome-container {
+          padding: 30px;
+          margin: 20px;
+        }
+        h1 {
+          font-size: 2rem;
+        }
+        .subtitle {
+          font-size: 1rem;
+        }
+      }
+    </style>
   </head>
-  <body>
-    <header class="header">
-      <div class="container">
-        <h1>🗳️ Integrity Polls</h1>
-        <nav>
-          <ul class="nav-links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li>
-              <a
-                href="login.html
-              "
-                >Login</a
-              >
-            </li>
-            <li><a href="fegister.html">Register</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
 
-    <section class="hero-section">
-      <div class="container">
-        <h2>Make Your Voice Heard</h2>
-        <p>Vote securely, quickly, and from anywhere in the world.</p>
-        <div class="buttons">
-          <a href="login.html" class="btn primary">Login</a>
-          <a href="fegister.html" class="btn secondary">Register</a>
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Welcome - Online Voting System</title>
+      <link rel="stylesheet" href="style.css" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+        rel="stylesheet"
+      />
+    </head>
+    <body>
+      <div class="welcome-container">
+        <!-- Icon to represent voting -->
+        <div class="icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="64"
+            height="64"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-check-square"
+          >
+            <polyline points="9 11 12 14 22 4"></polyline>
+            <path
+              d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
+            ></path>
+          </svg>
         </div>
-        <div class="countdown" id="countdown">
-          Voting ends in: <span id="timer">Loading...</span>
-        </div>
+
+        <h1 class="fade-in">🗳️Welcome to SecureVote</h1>
+        <p class="subtitle fade-in">
+          Your Voice, Your Future. Cast Your Vote Securely.
+        </p>
+        <p class="description fade-in">
+          Our platform ensures that your vote is confidential, secure, and
+          counted. Participate in the democratic process from anywhere, at any
+          time.
+        </p>
+
+        <a href="../OnlineVoting/index.html" class="cta-button fade-in"
+          >Proceed to Login</a
+        >
       </div>
-    </section>
 
-    <footer>
-      <p>&copy; 2025 Online Voting System | Secure | Transparent | Trusted</p>
-    </footer>
+      <footer>
+        <p>© 2024 SecureVote. All Rights Reserved.</p>
+      </footer>
 
-    <script src="script.js"></script>
-  </body>
+      <script src="script.js"></script>
+    </body>
+  </html>
+
+  <script>
+    "DOMContentLoaded",
+      () => {
+        const ctaButton = document.querySelector(".cta-button");
+        ctaButton.addEventListener("click", (event) => {
+          // Prevent the link from  jumping to the #login anchor immediately event.preventDefault();
+          // You can add a small effect before redirecting
+          ctaButton.textContent = "Redirecting..."; //  In a real application, you would redirect to the login page // For example:
+          window.location.href = "/login.html"; // For this demo, we'll just show an alert  and log to the
+          console.console.log("Proceeding to login page...");
+          alert("This would now take you to the login or registration page!"); // Restore button text  after a short delay in case the user doesn't navigate away
+          setTimeout(() => {
+            ctaButton.textContent = "Proceed to Login";
+          }, 1500);
+        });
+      };
+  </script>
 </html>

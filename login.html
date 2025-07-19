@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Integrity Polls- Home</title>
+    <link rel="stylesheet" href="css/stylesheet.css" />
+  </head>
+
+  <body>
+    <center>
+      <div id="headerSection">
+        <h1>INTEGRITY POLLS</h1>
+      </div>
+      <hr />
+
+      <div id="bodySection">
+        <form action="api/login.php" method="post">
+          <h2>Login</h2>
+
+          <input
+            type="number"
+            id="mobie"
+            name="mobile"
+            placeholder="Enter mobile"
+          /><br /><br />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter password"
+          /><br /><br />
+
+          <select id="dropbox" name="role">
+            <option value="voter">Voter</option>
+            <option value="candidate">Candidate</option>
+            <option value="admin">Admin</option></select
+          ><br /><br />
+
+          <button id="loginbutton" type="submit">Login</button><br /><br />
+          <p>
+            New user?
+            <a href="../OnlineVoting/routes/register.html">Register here!</a
+            ><br />
+          </p>
+
+          <p><a href="../OnlineVoting/index.html">Back to main page</a></p>
+        </form>
+      </div>
+    </center>
+  </body>
+</html>

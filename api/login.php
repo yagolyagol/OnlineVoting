@@ -14,9 +14,8 @@ if (mysqli_num_rows($result) > 0) {
     $userdata = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
     // If password is plain text
-    if ($userdata['password'] === $password) {
-
-        // Store session
+    if (password_verify($password, $userdata['password'])){
+            // Store session
         $_SESSION['userdata'] = $userdata;
 
         // Fetch all candidates
@@ -25,13 +24,14 @@ if (mysqli_num_rows($result) > 0) {
 
         // Redirect to dashboard
         header("Location: ../routes/dashboard.php");
+        
         exit;
 
     } else {
-        echo "<script>alert('Incorrect password'); window.location='../index.html';</script>";
+        echo "<script>alert('Incorrect password'); window.location='../login.html';</script>";
     }
 } else {
-    echo "<script>alert('User not found'); window.location='../index.html';</script>";
+    echo "<script>alert('User not found'); window.location='../login.html';</script>";
 }
 ?>
 

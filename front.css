@@ -101,7 +101,7 @@ body {
 }
 
 footer {
-    background-color: var(--primary-color);
+    background-color: transparent;    
     color: var(--white);
     text-align: center;
     padding: 15px 0;
