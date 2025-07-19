@@ -1,59 +1,52 @@
 <?php
+session_start();
 include("connect.php");
 
-// Get and sanitize input
-$name = mysqli_real_escape_string($connect, $_POST['name']);
-$mobile = mysqli_real_escape_string($connect, $_POST['mobile']);
-$password = $_POST['password'];
-$cpassword = $_POST['cpassword'];
-$address = mysqli_real_escape_string($connect, $_POST['address']);
-$role = mysqli_real_escape_string($connect, $_POST['role']);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = trim($_POST['name']);
+    $mobile = trim($_POST['mobile']);
+    $password = $_POST['password'];
+    $cpassword = $_POST['cpassword'];
+    $address = trim($_POST['address']);
+    $role = $_POST['role'];
+    $status = 0; // default not voted
 
-// Validate and process uploaded image
-$image = $_FILES['Photo']['name'];
-$tmp_name = $_FILES['Photo']['tmp_name'];
-$image_ext = strtolower(pathinfo($image, PATHINFO_EXTENSION));
-$allowed_ext = ['jpg', 'jpeg', 'png', 'gif'];
-
-if (!in_array($image_ext, $allowed_ext)) {
-    echo "<script>alert('Invalid image format.'); window.location='../routes/register.html';</script>";
-    exit();
-}
-
-$new_image_name = uniqid() . '.' . $image_ext;
-$upload_path = "../uploads/" . $new_image_name;
-
-// Validate passwords match
-if ($password !== $cpassword) {
-    echo "<script>alert('Passwords do not match!'); window.location='../routes/register.html';</script>";
-    exit();
-}
-
-// Hash the password
-$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-// Check for duplicate mobile number
-$check_mobile = mysqli_query($connect, "SELECT * FROM user WHERE mobile='$mobile'");
-if (mysqli_num_rows($check_mobile) > 0) {
-    echo "<script>alert('Mobile number already registered!'); window.location='../routes/register.html';</script>";
-    exit();
-}
-
-// Move uploaded file
-if (move_uploaded_file($tmp_name, $upload_path)) {
-    // Use prepared statement to prevent SQL injection
-    $stmt = $connect->prepare("INSERT INTO user (name, mobile, password, address, Photo, role, Status, votes) VALUES (?, ?, ?, ?, ?, ?, 0, 0)");
-    $stmt->bind_param("ssssss", $name, $mobile, $hashed_password, $address, $new_image_name, $role);
-    
-    if ($stmt->execute()) {
-        echo "<script>alert('Registration successful!'); window.location='../';</script>";
-    } else {
-        echo "<script>alert('Error in registration.'); window.location='../routes/register.html';</script>";
+    // Validation
+    if (!preg_match("/^[a-zA-Z\s]+$/", $name)) {
+        die("Invalid name. Only letters and spaces allowed.");
     }
+
+    if (!preg_match("/^[0-9]{10}$/", $mobile)) {
+        die("Mobile must be exactly 10 digits.");
+    }
+
+    if (strlen($password) < 6) {
+        die("Password must be at least 6 characters.");
+    }
+
+    if ($password !== $cpassword) {
+        die("Passwords do not match.");
+    }
+
+    // Hash password
+    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+    // Image upload
+    $photo_name = $_FILES['Photo']['name'];
+    $photo_tmp = $_FILES['Photo']['tmp_name'];
+    $photo_path = "../uploads/" . $photo_name;
+    move_uploaded_file($photo_tmp, $photo_path);
+
+    // Insert user
+    $stmt = $connect->prepare("INSERT INTO user (name, mobile, password, address, role, status, profile_image) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssssis", $name, $mobile, $password_hash, $address, $role, $status, $photo_name);
+
+    if ($stmt->execute()) {
+        echo "<script>alert('Registration successful. Please login.'); window.location='../index.html';</script>";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
     $stmt->close();
-} else {
-    echo "<script>alert('Failed to upload image.'); window.location='../routes/register.html';</script>";
 }
 ?>
-
-

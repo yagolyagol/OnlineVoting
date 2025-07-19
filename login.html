@@ -3,10 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Integrity Polls- Home</title>
+    <title>Integrity Polls - Login</title>
     <link rel="stylesheet" href="css/stylesheet.css" />
-  </head>
+    <script>
+      function validateLogin() {
+        const mobile = document.forms["loginForm"]["mobile"].value;
+        const password = document.forms["loginForm"]["password"].value;
 
+        if (!/^\d{10}$/.test(mobile)) {
+          alert("Please enter a valid 10-digit mobile number.");
+          return false;
+        }
+
+        if (password.length < 6) {
+          alert("Password must be at least 6 characters.");
+          return false;
+        }
+
+        return true;
+      }
+    </script>
+  </head>
   <body>
     <center>
       <div id="headerSection">
@@ -15,36 +32,43 @@
       <hr />
 
       <div id="bodySection">
-        <form action="api/login.php" method="post">
+        <form
+          name="loginForm"
+          action="api/login.php"
+          method="post"
+          onsubmit="return validateLogin()"
+        >
           <h2>Login</h2>
 
           <input
             type="number"
-            id="mobie"
             name="mobile"
             placeholder="Enter mobile"
+            required
           /><br /><br />
 
           <input
             type="password"
             name="password"
             placeholder="Enter password"
+            required
           /><br /><br />
 
-          <select id="dropbox" name="role">
+          <select name="role" required>
             <option value="voter">Voter</option>
             <option value="candidate">Candidate</option>
             <option value="admin">Admin</option></select
           ><br /><br />
 
-          <button id="loginbutton" type="submit">Login</button><br /><br />
+          <button type="submit">Login</button><br /><br />
+
           <p>
             New user?
-            <a href="../OnlineVoting/routes/register.html">Register here!</a
-            ><br />
+            <a href="routes/register.html">Register here!</a>
           </p>
-
-          <p><a href="../OnlineVoting/index.html">Back to main page</a></p>
+          <p>
+            <a href="index.html">Back to main page</a>
+          </p>
         </form>
       </div>
     </center>

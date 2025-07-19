@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['userdata'])) {
-    header("Location: ../index.html"); // redirect to login if session is not set
+    header("Location: ../index.html");
     exit;
 }
 
@@ -16,12 +16,11 @@ $status = ($userdata['status'] == 0)
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Integrity Polls - Dashboard</title>
-    <link rel="stylesheet" href="../css/stylesheet.css">
+    <link rel="stylesheet" href="../css/stylesheet.css" />
     <style>
-        /* Styles moved inline to simplify */
         #backbutton, #logoutbutton {
             padding: 10px;
             border-radius: 15px;
@@ -32,30 +31,12 @@ $status = ($userdata['status'] == 0)
         }
         #backbutton { float: left; }
         #logoutbutton { float: right; }
-        #Profile {
-            background-color: white;
-            width: 30%;
-            padding: 20px;
-            float: left;
-        }
-        #Group {
-            background-color: white;
-            width: 60%;
-            padding: 20px;
-            float: right;
-        }
-        #votebtn, #voted {
-            padding: 10px;
-            border-radius: 15px;
-            width: 20%;
-            color: blanchedalmond;
-            float: right;
-        }
+        #Profile { background-color: white; width: 30%; padding: 20px; float: left; }
+        #Group { background-color: white; width: 60%; padding: 20px; float: right; }
+        #votebtn, #voted { padding: 10px; border-radius: 15px; width: 20%; color: blanchedalmond; float: right; }
         #votebtn { background-color: rebeccapurple; }
         #voted { background-color: green; }
-        #mainpanel {
-            padding: 10px;
-        }
+        #mainpanel { padding: 10px; }
     </style>
 </head>
 <body>
@@ -85,7 +66,7 @@ $status = ($userdata['status'] == 0)
                     foreach ($groupsdata as $groups) {
                         ?>
                         <div>
-                            <img style="float: right" src="../uploads/<?php echo $groups['photo']; ?>" height="100" width="100">
+                            <img style="float: right" src="../uploads/<?php echo $groups['profile_image']; ?>" height="100" width="100">
                             <b>Group Name:</b> <?php echo $groups['name']; ?><br><br>
                             <b>Votes:</b> <?php echo $groups['votes']; ?><br><br>
                             <form action="../api/vote.php" method="post">
@@ -110,5 +91,3 @@ $status = ($userdata['status'] == 0)
     </div>
 </body>
 </html>
-
-
