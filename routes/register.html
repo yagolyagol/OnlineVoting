@@ -2,15 +2,271 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <title>Register - Integrity Polls</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Integrity Polls - Registration</title>
-    <link rel="stylesheet" href="../css/stylesheet.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+    />
+    <style>
+      :root {
+        --bg-gradient: linear-gradient(135deg, #6b73ff, #000dff, #00c9ff);
+        --bg-color: #ffffff;
+        --text-color: #000000;
+        --input-bg: #f9f9f9;
+        --border-color: #ccc;
+        --button-color: #000dff;
+        --shadow: rgba(0, 0, 0, 0.2);
+      }
+
+      [data-theme="dark"] {
+        --bg-gradient: linear-gradient(135deg, #1c1f2f, #111426, #222f3e);
+        --bg-color: #1c1c1c;
+        --text-color: #f5f5f5;
+        --input-bg: #2c2c2c;
+        --border-color: #444;
+        --button-color: #4c8fff;
+        --shadow: rgba(255, 255, 255, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg-gradient);
+        background-size: 400% 400%;
+        animation: gradientMove 15s ease infinite;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        overflow-y: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--text-color);
+        transition: background 0.4s ease;
+      }
+
+      @keyframes gradientMove {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .register-box {
+        background: var(--bg-color);
+        padding: 30px 25px;
+        border-radius: 16px;
+        box-shadow: 0 15px 35px var(--shadow);
+        max-width: 520px;
+        width: 100%;
+        overflow-y: auto;
+        max-height: 90vh;
+      }
+
+      h2 {
+        text-align: center;
+        color: var(--button-color);
+        margin-bottom: 30px;
+        font-weight: 600;
+      }
+
+      .form-group {
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        padding: 14px 12px;
+        font-size: 15px;
+        border-radius: 8px;
+        border: 1.5px solid var(--border-color);
+        background: var(--input-bg);
+        color: var(--text-color);
+      }
+
+      .form-group label {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        font-size: 14px;
+        color: #777;
+        pointer-events: none;
+        transition: all 0.3s ease;
+      }
+
+      .form-group input:focus + label,
+      .form-group input:not(:placeholder-shown) + label,
+      .form-group select:focus + label,
+      .form-group select:not([value=""]) + label,
+      .form-group textarea:focus + label,
+      .form-group textarea:not(:placeholder-shown) + label {
+        top: -10px;
+        left: 10px;
+        background: var(--bg-color);
+        padding: 0 4px;
+        font-size: 12px;
+        color: var(--button-color);
+      }
+
+      button {
+        width: 100%;
+        padding: 14px;
+        background-color: var(--button-color);
+        color: #fff;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #303eff;
+      }
+
+      .login-link {
+        text-align: center;
+        display: block;
+        margin-top: 20px;
+        font-size: 14px;
+        color: var(--text-color);
+        text-decoration: none;
+      }
+
+      .login-link:hover {
+        text-decoration: underline;
+      }
+
+      .toggle-theme {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--bg-color);
+        color: var(--text-color);
+        border: none;
+        border-radius: 20px;
+        padding: 10px 16px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+        box-shadow: 0 5px 15px var(--shadow);
+        z-index: 1000;
+        transition: all 0.3s ease;
+      }
+
+      @media (max-width: 600px) {
+        .register-box {
+          padding: 20px 16px;
+          margin: 0 10px;
+        }
+      }
+    </style>
+  </head>
+  <body data-theme="light">
+    <button class="toggle-theme" onclick="toggleTheme()">
+      Toggle Dark Mode
+    </button>
+    <div class="register-box">
+      <h2>Register - Integrity Polls</h2>
+      <form
+        action="../api/register.php"
+        method="POST"
+        enctype="multipart/form-data"
+        name="registerForm"
+        onsubmit="return validateRegistration()"
+      >
+        <div class="form-group">
+          <input type="text" name="name" required placeholder=" " />
+          <label>Full Name</label>
+        </div>
+        <div class="form-group">
+          <input type="text" name="mobile" required placeholder=" " />
+          <label>Mobile Number</label>
+        </div>
+        <div class="form-group">
+          <input type="email" name="email" required placeholder=" " />
+          <label>Email Address</label>
+        </div>
+        <div class="form-group">
+          <input type="password" name="password" required placeholder=" " />
+          <label>Password</label>
+        </div>
+        <div class="form-group">
+          <input type="password" name="cpassword" required placeholder=" " />
+          <label>Confirm Password</label>
+        </div>
+        <div class="form-group">
+          <input type="date" name="dob" required placeholder=" " />
+          <label>Date of Birth</label>
+        </div>
+        <div class="form-group">
+          <select name="gender" required>
+            <option value="" disabled selected hidden></option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+          <label>Gender</label>
+        </div>
+        <div class="form-group">
+          <textarea name="address" rows="3" required placeholder=" "></textarea>
+          <label>Address</label>
+        </div>
+        <div class="form-group">
+          <input type="text" name="voter_id" required placeholder=" " />
+          <label>Voter ID Number</label>
+        </div>
+        <div class="form-group">
+          <input type="file" name="photo" accept="image/*" required />
+          <label>Profile Picture</label>
+        </div>
+        <div class="form-group">
+          <select name="role" required>
+            <option value=" " disabled selected hidden>Select Role</option>
+            <option value="voter">Voter</option>
+            <option value="candidate">Candidate</option>
+            <option value="admin">Admin</option>
+          </select>
+          <label>Role</label>
+        </div>
+
+        <button type="submit">Register</button>
+      </form>
+      <a class="login-link" href="../login.html"
+        >Already have an account? Login here</a
+      >
+    </div>
+
     <script>
+      function toggleTheme() {
+        const body = document.body;
+        body.setAttribute(
+          "data-theme",
+          body.getAttribute("data-theme") === "dark" ? "light" : "dark"
+        );
+      }
+
       function validateRegistration() {
-        const name = document.forms["registerForm"]["name"].value;
-        const mobile = document.forms["registerForm"]["mobile"].value;
-        const password = document.forms["registerForm"]["password"].value;
-        const cpassword = document.forms["registerForm"]["cpassword"].value;
+        const form = document.forms["registerForm"];
+        const name = form["name"].value.trim();
+        const mobile = form["mobile"].value.trim();
+        const password = form["password"].value;
+        const cpassword = form["cpassword"].value;
 
         if (!/^[a-zA-Z\s]+$/.test(name)) {
           alert("Name should contain only letters and spaces.");
@@ -35,94 +291,5 @@
         return true;
       }
     </script>
-    <style>
-      #address,
-      #imagepart,
-      #role {
-        width: 20pc;
-        border: 2px solid black;
-        border-radius: 15px;
-        padding: 10px;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Integrity Polls</h1>
-    <hr />
-    <h2>Registration</h2>
-    <form
-      name="registerForm"
-      action="../api/register.php"
-      method="post"
-      enctype="multipart/form-data"
-      onsubmit="return validateRegistration()"
-    >
-      <input
-        type="text"
-        name="name"
-        placeholder="Enter Name"
-        required
-      /><br /><br />
-
-      <input
-        type="number"
-        name="mobile"
-        placeholder="Enter Mobile"
-        required
-      /><br /><br />
-
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        required
-      /><br /><br />
-
-      <input
-        type="password"
-        name="cpassword"
-        placeholder="Confirm password"
-        required
-      /><br /><br />
-
-      <input
-        id="address"
-        type="text"
-        name="address"
-        placeholder="Address"
-        required
-      /><br /><br />
-
-      <center>
-        <div id="imagepart">
-          Upload image: <input type="file" name="Photo" required />
-        </div>
-        <br />
-        <div id="role">
-          Select role:
-          <select name="role" required>
-            <option value="voter">Voter</option>
-            <option value="candidate">Candidate</option>
-            <option value="admin">Admin</option>
-          </select>
-        </div>
-      </center>
-      <br />
-      <button
-        style="
-          padding: 10px;
-          border-radius: 15px;
-          width: 20%;
-          background-color: rebeccapurple;
-          color: blanchedalmond;
-        "
-        type="submit"
-      >
-        Register</button
-      ><br /><br />
-
-      Already have an account?
-      <a href="../index.html">Login here.</a>
-    </form>
   </body>
 </html>
