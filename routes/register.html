@@ -121,6 +121,38 @@
         font-size: 12px;
         color: var(--button-color);
       }
+      .select-group {
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .select-group select {
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2212%22%20height%3D%228%22%20viewBox%3D%220%200%2012%208%22%20xmlns%3D%22http://www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M6%208L0%200h12L6%208z%22%20fill%3D%22%23444%22/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 12px;
+      }
+
+      .select-group label {
+        position: absolute;
+        top: 14px;
+        left: 12px;
+        font-size: 14px;
+        color: #777;
+        pointer-events: none;
+        transition: 0.2s ease all;
+      }
+
+      .select-group select:focus + label,
+      .select-group select:not([value=""]) + label {
+        top: -10px;
+        left: 10px;
+        font-size: 12px;
+        background: var(--bg-color);
+        padding: 0 4px;
+        color: var(--button-color);
+      }
 
       button {
         width: 100%;
@@ -151,19 +183,20 @@
       .login-link:hover {
         text-decoration: underline;
       }
-
       .toggle-theme {
         position: fixed;
         bottom: 20px;
         right: 20px;
-        background: var(--bg-color);
+        background: rgba(255, 255, 255, 0.08); /* transparent glass effect */
         color: var(--text-color);
-        border: none;
+        border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 20px;
         padding: 10px 16px;
         cursor: pointer;
         font-size: 13px;
         font-weight: 600;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
         box-shadow: 0 5px 15px var(--shadow);
         z-index: 1000;
         transition: all 0.3s ease;
@@ -174,6 +207,59 @@
           padding: 20px 16px;
           margin: 0 10px;
         }
+      }
+      input:focus,
+      textarea:focus,
+      select:focus {
+        outline: none;
+        border-color: var(--button-color);
+        box-shadow: 0 0 8px var(--button-color);
+        transition: all 0.3s ease-in-out;
+      }
+
+      .register-box {
+        animation: slideUp 0.8s ease-out;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(40px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      button {
+        background-image: linear-gradient(45deg, #000dff, #4c8fff);
+        box-shadow: 0 4px 14px rgba(0, 13, 255, 0.4);
+        transition: all 0.4s ease;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(0, 13, 255, 0.5);
+      }
+
+      .form-group input[type="file"] {
+        padding: 10px;
+        background: var(--input-bg);
+        border: 1.5px solid var(--border-color);
+        color: var(--text-color);
+        cursor: pointer;
+      }
+
+      .select-group select,
+      .form-group select {
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .select-group select:hover,
+      .form-group select:hover {
+        background: #f0f0f0;
       }
     </style>
   </head>
