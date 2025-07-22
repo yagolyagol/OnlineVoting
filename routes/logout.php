@@ -1,5 +1,15 @@
+
 <?php
 session_start();
+
+// Unset all session variables
+//$_SESSION = array(); clears all session variables safely
+$_SESSION = array();
+
+// Destroy the session
 session_destroy();
-header("location: ../");
+
+// Redirect to login page
+header("Location: ../login.html");
+exit();
 ?>

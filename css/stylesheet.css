@@ -200,18 +200,33 @@ a:hover {
 //admindashboard
 
 /* General layout */
+
+/* Default light mode */
 body {
-  margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f5f7fa;
-  color: #333;
-  transition: background-color 0.3s, color 0.3s;
+  --bg-color: #f9f9f9;
+  --text-color: #111;
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --shadow: rgba(0, 0, 0, 0.1);
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
-/* Dark mode support */
+/* Dark mode overrides */
 body.dark-mode {
-  background-color: #121212;
-  color: #eee;
+  --bg-color: #121212;
+  --text-color: #eee;
+  --glass-bg: rgba(30, 30, 30, 0.6);
+  --shadow: rgba(255, 255, 255, 0.1);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* Also apply to containers/tables/cards if needed */
+.container,
+.section,
+.admin-info {
+  background-color: var(--glass-bg);
+  color: var(--text-color);
 }
 
 .container {
@@ -285,13 +300,13 @@ a:hover {
 /* Dark mode toggle */
 .toggle-container {
   position: fixed;
-  top: 15px;
+  bottom: 20px;
   right: 20px;
-  z-index: 999;
-  background: #fff;
-  padding: 10px 15px;
-  border-radius: 20px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background: var(--glass-bg);
+  padding: 10px 18px;
+  border-radius: 30px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  font-size: 14px;
 }
 
 body.dark-mode .toggle-container {
@@ -328,5 +343,28 @@ body.dark-mode .toggle-container {
   th {
     display: none;
   }
+}
+.admin-info {
+  background: var(--glass-bg);
+  padding: 15px 25px;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  color: var(--text-color);
+}
+
+.admin-info p {
+  margin: 5px 0;
+  font-weight: 500;
+}
+
+.admin-photo {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
