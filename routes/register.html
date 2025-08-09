@@ -2,273 +2,223 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Register - Integrity Polls</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IntegrityPolls - Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
     />
     <style>
-      :root {
-        --bg-gradient: linear-gradient(135deg, #6b73ff, #000dff, #00c9ff);
-        --bg-color: #ffffff;
-        --text-color: #000000;
-        --input-bg: #f9f9f9;
-        --border-color: #ccc;
-        --button-color: #000dff;
-        --shadow: rgba(0, 0, 0, 0.2);
-      }
-
-      [data-theme="dark"] {
-        --bg-gradient: linear-gradient(135deg, #1c1f2f, #111426, #222f3e);
-        --bg-color: #1c1c1c;
-        --text-color: #f5f5f5;
-        --input-bg: #2c2c2c;
-        --border-color: #444;
-        --button-color: #4c8fff;
-        --shadow: rgba(255, 255, 255, 0.1);
-      }
-
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
+      /* Base and font */
       body {
-        font-family: "Inter", sans-serif;
-        background: var(--bg-gradient);
-        background-size: 400% 400%;
-        animation: gradientMove 15s ease infinite;
         margin: 0;
-        padding: 0;
-        min-height: 100vh;
-        overflow-y: auto;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
         display: flex;
         justify-content: center;
         align-items: center;
-        color: var(--text-color);
-        transition: background 0.4s ease;
+        min-height: 100vh;
+        overflow: hidden;
+        text-align: center;
       }
 
-      @keyframes gradientMove {
-        0% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-        100% {
-          background-position: 0% 50%;
-        }
-      }
-
-      .register-box {
-        background: var(--bg-color);
+      /* Glass container with scroll */
+      .register-container {
+        background: rgba(255, 255, 255, 0.1);
         padding: 30px 25px;
-        border-radius: 16px;
-        box-shadow: 0 15px 35px var(--shadow);
+        border-radius: 15px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
         max-width: 520px;
-        width: 100%;
-        overflow-y: auto;
+        width: 90%;
         max-height: 90vh;
+        overflow-y: auto;
+        animation: slideUp 0.8s forwards ease-out;
+        text-align: left;
+      }
+
+      @keyframes slideUp {
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
       }
 
       h2 {
-        text-align: center;
-        color: var(--button-color);
+        font-size: 2rem;
+        font-weight: 700;
         margin-bottom: 30px;
-        font-weight: 600;
+        color: #fff;
+        text-align: center;
       }
 
+      /* Floating label form groups */
       .form-group {
         position: relative;
         margin-bottom: 20px;
       }
 
-      .form-group input,
-      .form-group textarea,
-      .form-group select {
+      input,
+      textarea,
+      select {
         width: 100%;
         padding: 14px 12px;
         font-size: 15px;
         border-radius: 8px;
-        border: 1.5px solid var(--border-color);
-        background: var(--input-bg);
-        color: var(--text-color);
+        border: none;
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+        transition: background-color 0.3s ease;
+        resize: vertical;
       }
 
+      input::placeholder,
+      textarea::placeholder,
+      select {
+        color: #ddd;
+      }
+
+      input:focus,
+      textarea:focus,
+      select:focus {
+        background: rgba(255, 255, 255, 0.3);
+        outline: none;
+        box-shadow: 0 0 8px #a0a0ff;
+      }
+
+      /* Floating labels */
       .form-group label {
         position: absolute;
         top: 14px;
         left: 14px;
         font-size: 14px;
-        color: #777;
+        color: #ccc;
         pointer-events: none;
         transition: all 0.3s ease;
+        background: transparent;
       }
 
-      .form-group input:focus + label,
-      .form-group input:not(:placeholder-shown) + label,
-      .form-group select:focus + label,
-      .form-group select:not([value=""]) + label,
-      .form-group textarea:focus + label,
-      .form-group textarea:not(:placeholder-shown) + label {
+      input:focus + label,
+      input:not(:placeholder-shown) + label,
+      textarea:focus + label,
+      textarea:not(:placeholder-shown) + label,
+      select:focus + label,
+      select:not([value=""]) + label {
         top: -10px;
         left: 10px;
-        background: var(--bg-color);
-        padding: 0 4px;
+        background: rgba(255 255 255 / 0.1);
+        padding: 0 6px;
         font-size: 12px;
-        color: var(--button-color);
-      }
-      .select-group {
-        position: relative;
-        margin-bottom: 20px;
+        color: #a0a0ff;
       }
 
-      .select-group select {
-        appearance: none;
-        background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2212%22%20height%3D%228%22%20viewBox%3D%220%200%2012%208%22%20xmlns%3D%22http://www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M6%208L0%200h12L6%208z%22%20fill%3D%22%23444%22/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 12px center;
-        background-size: 12px;
+      /* For file input */
+      input[type="file"] {
+        padding: 10px;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
       }
 
-      .select-group label {
-        position: absolute;
-        top: 14px;
-        left: 12px;
-        font-size: 14px;
-        color: #777;
-        pointer-events: none;
-        transition: 0.2s ease all;
-      }
-
-      .select-group select:focus + label,
-      .select-group select:not([value=""]) + label {
-        top: -10px;
-        left: 10px;
-        font-size: 12px;
-        background: var(--bg-color);
-        padding: 0 4px;
-        color: var(--button-color);
-      }
-
+      /* Button */
       button {
         width: 100%;
         padding: 14px;
-        background-color: var(--button-color);
-        color: #fff;
-        font-weight: 600;
+        border-radius: 50px;
         border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-      }
-
-      button:hover {
-        background-color: #303eff;
-      }
-
-      .login-link {
-        text-align: center;
-        display: block;
-        margin-top: 20px;
-        font-size: 14px;
-        color: var(--text-color);
-        text-decoration: none;
-      }
-
-      .login-link:hover {
-        text-decoration: underline;
-      }
-      .toggle-theme {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: rgba(255, 255, 255, 0.08); /* transparent glass effect */
-        color: var(--text-color);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 20px;
-        padding: 10px 16px;
-        cursor: pointer;
-        font-size: 13px;
+        background-color: #ffffff;
+        color: #667eea;
         font-weight: 600;
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        box-shadow: 0 5px 15px var(--shadow);
-        z-index: 1000;
+        font-size: 1rem;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         transition: all 0.3s ease;
-      }
-
-      @media (max-width: 600px) {
-        .register-box {
-          padding: 20px 16px;
-          margin: 0 10px;
-        }
-      }
-      input:focus,
-      textarea:focus,
-      select:focus {
-        outline: none;
-        border-color: var(--button-color);
-        box-shadow: 0 0 8px var(--button-color);
-        transition: all 0.3s ease-in-out;
-      }
-
-      .register-box {
-        animation: slideUp 0.8s ease-out;
-      }
-
-      @keyframes slideUp {
-        from {
-          opacity: 0;
-          transform: translateY(40px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      button {
-        background-image: linear-gradient(45deg, #000dff, #4c8fff);
-        box-shadow: 0 4px 14px rgba(0, 13, 255, 0.4);
-        transition: all 0.4s ease;
+        margin-top: 10px;
       }
 
       button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(0, 13, 255, 0.5);
+        background-color: #f0f0f0;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
       }
 
-      .form-group input[type="file"] {
-        padding: 10px;
-        background: var(--input-bg);
-        border: 1.5px solid var(--border-color);
-        color: var(--text-color);
+      /* Links */
+      .login-link {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 0.9rem;
+      }
+
+      .login-link a {
+        color: #ddd;
+        text-decoration: underline;
         cursor: pointer;
+        transition: color 0.3s ease;
       }
 
-      .select-group select,
-      .form-group select {
-        cursor: pointer;
-        transition: background 0.3s ease;
+      .login-link a:hover {
+        color: #a0a0ff;
       }
 
-      .select-group select:hover,
-      .form-group select:hover {
-        background: #f0f0f0;
+      /* Dark mode toggle */
+      .toggle-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        color: #fff;
+        font-size: 14px;
+        user-select: none;
+      }
+
+      /* Dark mode styles */
+      body.dark-mode {
+        background: #1e1e1e;
+        color: #fff;
+      }
+      body.dark-mode .register-container {
+        background: rgba(50, 50, 50, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      body.dark-mode input,
+      body.dark-mode select,
+      body.dark-mode textarea {
+        background: rgba(255, 255, 255, 0.1);
+        color: #eee;
+      }
+      body.dark-mode input::placeholder,
+      body.dark-mode select {
+        color: #ccc;
+      }
+      body.dark-mode button {
+        background-color: #667eea;
+        color: white;
+      }
+      body.dark-mode button:hover {
+        background-color: #5566cc;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+      }
+
+      /* Responsive */
+      @media (max-width: 480px) {
+        .register-container {
+          padding: 20px 15px;
+        }
+        h2 {
+          font-size: 1.7rem;
+        }
       }
     </style>
   </head>
-  <body data-theme="light">
-    <button class="toggle-theme" onclick="toggleTheme()">
-      Toggle Dark Mode
-    </button>
-    <div class="register-box">
-      <h2>Register - Integrity Polls</h2>
+  <body>
+    <div class="toggle-container">
+      <label><input type="checkbox" id="darkModeToggle" /> Dark Mode</label>
+    </div>
+
+    <div class="register-container">
+      <h2>IntegrityPolls Registration</h2>
       <form
         action="../api/register.php"
         method="POST"
@@ -281,7 +231,13 @@
           <label>Full Name</label>
         </div>
         <div class="form-group">
-          <input type="text" name="mobile" required placeholder=" " />
+          <input
+            type="text"
+            name="mobile"
+            required
+            placeholder=" "
+            maxlength="10"
+          />
           <label>Mobile Number</label>
         </div>
         <div class="form-group">
@@ -289,11 +245,23 @@
           <label>Email Address</label>
         </div>
         <div class="form-group">
-          <input type="password" name="password" required placeholder=" " />
+          <input
+            type="password"
+            name="password"
+            required
+            placeholder=" "
+            minlength="6"
+          />
           <label>Password</label>
         </div>
         <div class="form-group">
-          <input type="password" name="cpassword" required placeholder=" " />
+          <input
+            type="password"
+            name="cpassword"
+            required
+            placeholder=" "
+            minlength="6"
+          />
           <label>Confirm Password</label>
         </div>
         <div class="form-group">
@@ -323,7 +291,7 @@
         </div>
         <div class="form-group">
           <select name="role" required>
-            <option value=" " disabled selected hidden>Select Role</option>
+            <option value="" disabled selected hidden>Select Role</option>
             <option value="voter">Voter</option>
             <option value="candidate">Candidate</option>
             <option value="admin">Admin</option>
@@ -333,20 +301,35 @@
 
         <button type="submit">Register</button>
       </form>
-      <a class="login-link" href="../login.html"
-        >Already have an account? Login here</a
-      >
+
+      <div class="login-link">
+        Already have an account? <a href="../login.html">Login here</a>
+      </div>
     </div>
 
     <script>
-      function toggleTheme() {
+      // Dark mode toggle logic
+      window.onload = function () {
+        const toggle = document.getElementById("darkModeToggle");
         const body = document.body;
-        body.setAttribute(
-          "data-theme",
-          body.getAttribute("data-theme") === "dark" ? "light" : "dark"
-        );
-      }
 
+        if (localStorage.getItem("darkMode") === "enabled") {
+          body.classList.add("dark-mode");
+          toggle.checked = true;
+        }
+
+        toggle.addEventListener("change", () => {
+          if (toggle.checked) {
+            body.classList.add("dark-mode");
+            localStorage.setItem("darkMode", "enabled");
+          } else {
+            body.classList.remove("dark-mode");
+            localStorage.setItem("darkMode", "disabled");
+          }
+        });
+      };
+
+      // Form validation same as before
       function validateRegistration() {
         const form = document.forms["registerForm"];
         const name = form["name"].value.trim();

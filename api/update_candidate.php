@@ -1,5 +1,5 @@
 <?php
-include("../connect.php");
+include("../api/connect.php");
 
 $id = $_POST['id'];
 $name = $_POST['name'];

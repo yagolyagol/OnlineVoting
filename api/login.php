@@ -37,10 +37,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 exit;
             } else {
-                echo "<script>alert('Incorrect password'); window.location='login.html';</script>";
+                echo "<script>alert('Incorrect password'); window.location='../login.html';</script>";
             }
         } else {
-            echo "<script>alert('User not found'); window.location='login.html';</script>";
+            echo "<script>alert('User not found'); window.location='../login.html';</script>";
         }
 
     } else {
