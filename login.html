@@ -169,11 +169,11 @@
     </style>
     <script>
       function validateLogin() {
-        const mobile = document.forms["loginForm"]["mobile"].value.trim();
-        const password = document.forms["loginForm"]["password"].value.trim();
+        const email = document.forms["loginForm"]["email"].value.trim();
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if (!/^\d{10}$/.test(mobile)) {
-          alert("Please enter a valid 10-digit mobile number.");
+        if (!emailPattern.test(email)) {
+          alert("Please enter a valid email address.");
           return false;
         }
 
@@ -222,10 +222,9 @@
         onsubmit="return validateLogin()"
       >
         <input
-          type="text"
-          name="mobile"
-          placeholder="Enter 10-digit mobile"
-          maxlength="10"
+          type="email"
+          name="email"
+          placeholder="Enter your email"
           required
         />
 
