@@ -12,7 +12,6 @@ if ($_SESSION['userdata']['role'] !== 'voter') {
     exit;
 }
 
-
 $userdata = $_SESSION['userdata'];
 $groupsdata = $_SESSION['groupsdata'];
 
@@ -26,7 +25,9 @@ $status = ($userdata['status'] == 0)
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Integrity Polls - Dashboard</title>
-  <link rel="stylesheet" href="../css/stylesheet.css" />
+  
+ 
+ 
   <style>
   * {
     box-sizing: border-box;
@@ -48,45 +49,91 @@ $status = ($userdata['status'] == 0)
     color: #eee;
   }
 
-  /* Header */
-  #headerSection {
-    background-color: rebeccapurple;
-    color: white;
-    padding: 500;
+  /* Dark mode overrides */
+body.dark-mode {
+  --bg-color: #121212;
+  --text-color: #eee;
+  --glass-bg: rgba(30, 30, 30, 0.6);
+  --shadow: rgba(255, 255, 255, 0.1);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* Also apply to containers/tables/cards if needed */
+.container,
+.section,
+.admin-info {
+  background-color: var(--glass-bg);
+  color: var(--text-color);
+}
+
+.container {
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+/* Section boxes */
+.section {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+  transition: background-color 0.3s;
+}
+
+body.dark-mode .section {
+  background-color: #1e1e1e;
+}
+
+  /* HEADER BAR */
+  #headerBar {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: rebeccapurple;
+    padding: 10px 20px;
+    color: white;
     box-shadow: 0 4px 8px rgba(100, 0, 150, 0.3);
   }
 
-  #headerSection h1 {
+  #headerBar h1 {
+    flex: 1;
+    text-align: center;
     font-weight: 700;
-    font-size: 1.8rem;
-    margin: 0 auto;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    font-size: 2rem;
+    margin: 0;
+  }
+
+  .header-left,
+  .header-right {
+    display: flex;
+    align-items: center;
   }
 
   /* Buttons */
   #backbutton, #logoutbutton {
-  background-color: crimson;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 10px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease;
+    background-color: crimson;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
   }
 
   #backbutton:hover, #logoutbutton:hover {
     background-color: #e6e6e6;
+    color: black;
   }
 
   .dark-mode #backbutton,
   .dark-mode #logoutbutton {
-            background-color: #2c2c2c;
-            color: white;
-            border: 1px solid #555;  
+    background-color: #2c2c2c;
+    color: white;
+    border: 1px solid #555;  
   }
 
   .dark-mode #backbutton:hover,
@@ -132,15 +179,6 @@ $status = ($userdata['status'] == 0)
     object-fit: cover;
   }
 
-  #Profile b {
-    font-weight: 700;
-    margin-top: 12px;
-  }
-
-  #Profile b + br {
-    margin-bottom: 14px;
-  }
-
   /* Groups Panel */
   #Group {
     flex: 2 1 650px;
@@ -158,21 +196,17 @@ $status = ($userdata['status'] == 0)
     color: #ddd;
   }
 
-  /* Group cards */
   .group-card {
     border-bottom: 1px solid #ccc;
     padding: 18px 0;
-    position: relative;
-    overflow: hidden;
     display: flex;
     align-items: center;
     gap: 20px;
     transition: background-color 0.2s ease;
-    cursor: pointer;
   }
 
   .group-card:hover {
-    background-color: #f3eaff;
+    background-color: #af91d6ff;
   }
 
   .dark-mode .group-card:hover {
@@ -180,40 +214,18 @@ $status = ($userdata['status'] == 0)
   }
 
   .group-card img {
-    flex-shrink: 0;
     border-radius: 15px;
     width: 100px;
     height: 100px;
     object-fit: cover;
     box-shadow: 0 5px 15px rgba(100, 0, 150, 0.25);
-    transition: transform 0.3s ease;
-  }
-
-  .group-card:hover img {
-    transform: scale(1.05);
   }
 
   .group-info {
     flex-grow: 1;
   }
 
-  .group-info b {
-    font-size: 1.2rem;
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 700;
-  }
-
-  .group-info p {
-    margin: 5px 0 12px;
-    font-weight: 600;
-  }
-
   /* Vote button */
-  form {
-    margin: 0;
-  }
-
   #votebtn, #voted {
     background-color: rebeccapurple;
     color: white;
@@ -222,8 +234,6 @@ $status = ($userdata['status'] == 0)
     border-radius: 15px;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(100, 0, 150, 0.4);
-    transition: background-color 0.3s ease;
     font-size: 1rem;
   }
 
@@ -234,70 +244,32 @@ $status = ($userdata['status'] == 0)
   #voted {
     background-color: #4caf50;
     cursor: default;
-    box-shadow: 0 4px 15px rgba(46, 125, 50, 0.6);
-  }
-
-  /* Responsive */
-  @media (max-width: 900px) {
-    #mainpanel {
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 15px;
-      gap: 30px;
-    }
-
-    #Profile, #Group {
-      max-width: 90vw;
-      flex: 1 1 auto;
-    }
-
-    .group-card {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .group-card img {
-      margin-bottom: 12px;
-      width: 90px;
-      height: 90px;
-    }
-
-    #votebtn, #voted {
-      width: 100%;
-      padding: 12px 0;
-    }
   }
 
   /* Dark mode toggle */
   .toggle-container {
-    position: fixed;
-    right: 5px;
-    background: rgba(249, 249, 249, 0.85);
-    padding: 8px 16px;
-    border-radius: 30px;
-    font-size: 14px;
-    font-weight: 600;
-    color: rebeccapurple;
-    user-select: none;
-    box-shadow: 0 2px 10px rgba(119, 8, 174, 0.15);
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
+  position: fixed;
+  bottom: 20px;   /* Distance from the bottom */
+  right: 20px;    /* Distance from the right */
+  background: rgba(249, 249, 249, 0.85);
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rebeccapurple;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15); /* optional shadow for visibility */
+  z-index: 1000; /* ensure it's above other elements */
+}
 
-  .dark-mode .toggle-container {
-    background: rgba(40,40,40,0.85);
-    color: #bbb;
-  }
-
-  .toggle-container input {
-    margin-left: 8px;
-    cursor: pointer;
-    transform: scale(1.1);
-    vertical-align: middle;
-  }
+.dark-mode .toggle-container {
+  background: rgba(40,40,40,0.85);
+  color: #bbb;
+}
   </style>
 </head>
+
 <body>
-    <body>
+
   <div class="toggle-container">
     <label>
       Dark Mode
@@ -305,14 +277,21 @@ $status = ($userdata['status'] == 0)
     </label>
   </div>
 
-  <div id="headerSection">
-    <a href="../login.html"><button id="backbutton">Back</button></a>
+  <!-- HEADER -->
+  <div id="headerBar">
+    <div class="header-left">
+      <a href="../login.html"><button id="backbutton">Back</button></a>
+    </div>
     <h1>Integrity Polls</h1>
+    <div class="header-right">
+      <a href="logout.php"><button id="logoutbutton">Logout</button></a>
+    </div>
   </div>
 
+  <!-- MAIN CONTENT -->
   <div id="mainpanel">
-    <!-- Profile Panel -->
-    <section id="Profile" aria-label="User Profile">
+    <!-- Profile -->
+    <section id="Profile">
       <img src="../uploads/<?php echo htmlspecialchars($userdata['profile_image']); ?>" alt="User profile picture" />
       <b>Name:</b> <?php echo htmlspecialchars($userdata['name']); ?><br /><br />
       <b>Mobile:</b> <?php echo htmlspecialchars($userdata['mobile']); ?><br /><br />
@@ -320,11 +299,11 @@ $status = ($userdata['status'] == 0)
       <b>Status:</b> <?php echo $status; ?><br />
     </section>
 
-    <!-- Groups Panel -->
-    <section id="Group" aria-label="Candidate Groups">
+    <!-- Groups -->
+    <section id="Group">
       <?php if (!empty($groupsdata)) {
         foreach ($groupsdata as $groups) { ?>
-          <div class="group-card" tabindex="0" role="region" aria-label="Group <?php echo htmlspecialchars($groups['name']); ?>">
+          <div class="group-card">
             <img src="../uploads/<?php echo htmlspecialchars($groups['profile_image']); ?>" alt="Group <?php echo htmlspecialchars($groups['name']); ?> image" />
             <div class="group-info">
               <b><?php echo htmlspecialchars($groups['name']); ?></b>
@@ -351,7 +330,6 @@ $status = ($userdata['status'] == 0)
     const toggle = document.getElementById('darkModeToggle');
     const body = document.body;
 
-    // Load saved mode
     if (localStorage.getItem('darkMode') === 'enabled') {
       body.classList.add('dark-mode');
       toggle.checked = true;
@@ -367,8 +345,6 @@ $status = ($userdata['status'] == 0)
       }
     });
   </script>
-  <a href="logout.php"><button id="logoutbutton">Logout</button></a>
-</body>
 
 </body>
 </html>
