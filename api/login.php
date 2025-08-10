@@ -54,3 +54,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "<script>alert('Invalid request method'); window.location='../login.html';</script>";
 }
 ?>
+
+
+login(existing users)
+// Login
+$enteredPassword = $_POST['password'];
+
+// Fetch hashed password from DB for this user
+$storedHash = $row['password']; 
+
+if (password_verify($enteredPassword, $storedHash)) {
+    // Password matches, log in
+} else {
+    die("Invalid credentials.");
+}
+
+password change (exixting users)
+// When a user changes password
+$newPassword = $_POST['new_password'];
+
+if (!preg_match('/^(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/', $newPassword)) {
+    die("New password must contain at least one number, one special character, and be at least 6 characters long.");
+}
+
+$hashedNewPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+// Save $hashedNewPassword to DB

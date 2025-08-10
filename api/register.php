@@ -31,9 +31,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Mobile must be exactly 10 digits.");
     }
 
-    if (strlen($password) < 6) {
-        die("Password must be at least 6 characters.");
+    if (!preg_match('/^(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/', $password)) {
+    die("Password must contain at least one number, one special character, and be at least 6 characters long.");
     }
+
 
     if ($password !== $cpassword) {
         die("Passwords do not match.");
