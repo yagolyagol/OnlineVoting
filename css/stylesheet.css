@@ -200,16 +200,57 @@ a:hover {
 //admindashboard
 
 /* General layout */
+/* ===== HEADER ===== */
+header {
+  background: var(--card-bg);
+  backdrop-filter: blur(8px);
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow);
+  border-radius: 0; /* full width bar look */
+  margin-bottom: 20px;
+}
 
+/* Keep header text readable in dark/light mode */
+header h1, header h2, header h3 {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+/* ===== MAIN CONTAINER ===== */
+.main-container {
+  background: var(--card-bg);
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+/* Spacing between header and content */
 /* Default light mode */
 body {
-  --bg-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+   --bg-color: #f9f9f9;
   --text-color: #111;
   --glass-bg: rgba(255, 255, 255, 0.7);
   --shadow: rgba(0, 0, 0, 0.1);
   background-color: var(--bg-color);
   color: var(--text-color);
 }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
 
 /* Dark mode overrides */
 body.dark-mode {
@@ -249,11 +290,7 @@ body.dark-mode .section {
   background-color: #1e1e1e;
 }
 
-/* Headings */
-h2, h3 {
-  margin-top: 0;
-  text-align: center;
-}
+
 
 /* Tables */
 table {
@@ -367,4 +404,33 @@ body.dark-mode .toggle-container {
   margin-bottom: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
+/* ================================
+   Admin Dashboard Chart Styles
+   ================================ */
+.chart-container {
+  background: var(--card-bg);
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
+.chart-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.chart-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+canvas {
+  width: 100% !important;
+  height: 350px !important;
+}
