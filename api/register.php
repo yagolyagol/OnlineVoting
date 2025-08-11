@@ -40,6 +40,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Passwords do not match.");
     }
 
+
+    // Registration
+    $password = $_POST['password'];
+
+if (!preg_match('/^(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/', $password)) {
+    die("Password must contain at least one number, one special character, and be at least 6 characters long.");
+}
     // Hash password
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
 

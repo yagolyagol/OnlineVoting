@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="../css/stylesheet.css" />
+  
+  
   <style>
     :root {
       --card-bg: var(--glass-bg);
@@ -23,31 +25,26 @@ html, body {
 
 /* Fixed header */
 header {
-  background: var(--glass-bg);
-  width: 100%;
-  padding: 15px 20px; /* reduced padding to make header smaller */
-  text-align: center;      
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: fixed;  
+  position: fixed;
   top: 0;
   left: 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  box-sizing: border-box;
+  width: 100%;
+  height: 60px; /* or your actual height */
   z-index: 1000;
 }
+
+
 
 /* Heading style */
 header h2 {
   margin: 0;
-  font-size: 22px;
+  font-size: 30px;
   font-weight: bold;
 }
 
 /* Push content down so it doesn't overlap header */
 .main-content {
-  padding-top: 100px; /* slightly larger than header height */
+  padding-top: 500px; /* slightly larger than header height */
 }
 
 .logout-btn {
@@ -148,7 +145,7 @@ header h2 {
     }
   </style>
 </head>
-<body>
+
 
 <?php
 session_start();
@@ -160,13 +157,13 @@ $admin = $_SESSION['userdata'];
 include '../api/connect.php';
 ?>
 <body>
+  <div id="admin-dashboard">
 
- <header>
+ <header class="dashboard-header">
   <div style="flex: 1;"></div>
 
-  <h2 style="flex: 1; text-align: center; margin: 0;">🛠️ Admin Dashboard</h2>
-
-  <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
+  <h2 style="flex: 10; text-align: center; margin: 0;">🛠️ Admin Dashboard</h2>
+  <div style="position:absolute; top:20px; right:20px;">
   <form action="../routes/logout.php" method="POST" style="margin: 0;">
     <button type="submit" class="logout-btn">🚪 Logout</button>
   </form>
@@ -192,27 +189,6 @@ include '../api/connect.php';
   <canvas id="rolesChart"></canvas>
 </div>
 
-
-  <div class="section" style="flex: 2; min-width: 300px;">
-    <h3>✅ Approved Candidates</h3>
-    <table>
-       <thead>
-        <tr><th>Name</th><th>Mobile</th><th>Votes</th></tr>
-      </thead>
-      <tbody>
-        <?php
-        $query = mysqli_query($connect, "SELECT * FROM user WHERE role='candidate' AND status='approved'");
-        while ($row = mysqli_fetch_assoc($query)) {
-            echo "<tr>
-                    <td>{$row['name']}</td>
-                    <td>{$row['mobile']}</td>
-                    <td>{$row['votes']}</td>
-                  </tr>";
-        }
-        ?>
-      </tbody>
-    </table>
-  </div>
 
   <div class="section" style="flex: 2; min-width: 300px;">
     <h3>🗳️ Registered Voters</h3>
@@ -264,6 +240,7 @@ include '../api/connect.php';
     <input type="checkbox" id="darkModeToggle">
   </label>
 </div>
+</div>
 
 
 <script>
@@ -299,6 +276,7 @@ new Chart(rolesCtx, {
   }
 });
 </script>
+
 
 </body>
 </html>

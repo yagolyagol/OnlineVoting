@@ -15,124 +15,247 @@ $userdata = $_SESSION['userdata'];
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Candidate Dashboard</title>
-    <link rel="stylesheet" href="../css/stylesheet.css" />
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #f4f4f4;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        /* Dark Mode */
-        .dark-mode {
-            background-color: #121212;
-            color: #eee;
-        }
-
-        header {
-            background: #007BFF;
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        header h1 {
-            font-size: 1.4rem;
-            margin: 0;
-            flex: 1;
-            text-align: center;
-        }
-        .header-controls {
-            position: absolute;
-            right: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .dark-mode header {
-            background: #1f1f1f;
-        }
-
-        main {
-            max-width: 1000px;
-            margin: 30px auto;
-            padding: 20px;
-        }
-
-        .profile-card, .form-card {
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .dark-mode .profile-card,
-        .dark-mode .form-card {
-            background-color: #1e1e1e;
-        }
-
-        .profile-top {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .profile-top img {
-            border-radius: 50%;
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-        }
-
-        .profile-info p {
-            margin: 5px 0;
-        }
-
-        form input, form button {
-            width: 100%;
-            padding: 10px;
-            margin: 6px 0;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-
-        form button {
-            background: #28a745;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        form button:hover {
-            background: #218838;
-        }
-
-       /* Style logout button */
-.logout-btn {
-  background: #dc3545;
-  padding: 10px 15px;
-  border-radius: 6px;
-  color: white;
-  text-decoration: none;
-  cursor: pointer;
+    /* Reset and base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-        .logout-btn:hover {
-            background: #b52a37;
-        }
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #222;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  line-height: 1.5;
+  padding-bottom: 40px; /* For spacing below main content */
+}
 
-        /* Dark Mode Form Styles */
-        .dark-mode input, .dark-mode button {
-            background-color: #2c2c2c;
-            color: white;
-            border: 1px solid #555;
-        }
+/* Dark Mode */
+body.dark-mode {
+  background-color: #121212;
+  color: #eee;
+}
+
+/* Header */
+header {
+  background-color: #007BFF;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+  user-select: none;
+}
+
+header h1 {
+  font-size: 1.6rem;
+  flex: 1;
+  text-align: center;
+}
+
+.header-controls {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.header-controls a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.header-controls a:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.header-controls label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Main content container */
+main {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 20px 40px;
+}
+
+/* Cards */
+.profile-card,
+.form-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.12);
+  padding: 24px 20px;
+  margin-bottom: 24px;
+  transition: background-color 0.3s ease;
+}
+
+body.dark-mode .profile-card,
+body.dark-mode .form-card {
+  background-color: #1e1e1e;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
+}
+
+/* Profile Top Section */
+.profile-top {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.profile-top img {
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  flex-shrink: 0;
+}
+
+.profile-info {
+  flex: 1;
+  min-width: 220px;
+}
+
+.profile-info h2 {
+  margin-bottom: 12px;
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+
+.profile-info p {
+  margin: 6px 0;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* Form styles */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+form input[type="text"],
+form input[type="file"] {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1.5px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+form input[type="text"]:focus,
+form input[type="file"]:focus {
+  outline: none;
+  border-color: #007BFF;
+  background-color: #f0f8ff;
+  color: #222;
+}
+
+body.dark-mode form input[type="text"],
+body.dark-mode form input[type="file"] {
+  background-color: #2c2c2c;
+  border-color: #555;
+  color: #eee;
+}
+
+body.dark-mode form input[type="text"]:focus,
+body.dark-mode form input[type="file"]:focus {
+  background-color: #3a3a3a;
+  border-color: #3399ff;
+  color: white;
+}
+
+/* Buttons */
+form button {
+  padding: 14px;
+  background-color: #28a745;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #218838;
+}
+
+/* Dark mode button */
+body.dark-mode form button {
+  background-color: #3a9a3a;
+}
+
+body.dark-mode form button:hover {
+  background-color: #2f7d2f;
+}
+
+/* Logout button (outside form) */
+.logout-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #dc3545;
+  padding: 12px 18px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.5);
+  transition: background-color 0.3s ease;
+  z-index: 1000;
+}
+
+.logout-btn:hover {
+  background-color: #b52a37;
+}
+
+/* Dark mode logout button */
+body.dark-mode .logout-btn {
+  box-shadow: 0 4px 12px rgba(181, 42, 55, 0.7);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 1.3rem;
+  }
+
+  .profile-top {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .profile-info {
+    min-width: auto;
+  }
+}
     </style>
 </head>
 <body>
@@ -140,6 +263,11 @@ $userdata = $_SESSION['userdata'];
   <h1>Candidate Dashboard</h1>
   <div class="header-controls">
     <label style="font-size:14px;">
+        <div style="position:absolute; top:20px; right:20px;">
+    <a href="../change_password.html" style="margin-right:15px; color:white;">Change Password</a>
+  
+</div>
+
       <input type="checkbox" id="darkModeToggle"> Dark Mode
     </label>
   </div>

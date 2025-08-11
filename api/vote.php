@@ -38,7 +38,7 @@ if ($update_votes && $update_user_status) {
 
 
 session_start();
-include("../connect.php");
+include("../api/connect.php");
 
 if (isset($_POST['gvotes']) && isset($_POST['gid'])) {
     $votes = $_POST['gvotes'];

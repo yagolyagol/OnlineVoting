@@ -248,9 +248,11 @@
           <input
             type="password"
             name="password"
+            id="password"
+            placeholder="Enter password"
+            pattern="^(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$"
+            title="Password must be at least 6 characters and include at least one number and one special character (!@#$%^&*)"
             required
-            placeholder=" "
-            minlength="6"
           />
           <label>Password</label>
         </div>
