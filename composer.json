@@ -1,0 +1,7 @@
+{
+  "name": "integrity-polls",
+  "description": "Online Voting System",
+  "require": {
+    "php": ">=8.0"
+  }
+}
