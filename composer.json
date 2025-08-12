@@ -1,5 +1,5 @@
 {
-  "name": "integrity-polls",
+  "name": "yagol/integrity-polls",
   "description": "Online Voting System",
   "require": {
     "php": ">=8.0"
