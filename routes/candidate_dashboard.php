@@ -260,17 +260,12 @@ body.dark-mode .logout-btn {
 </head>
 <body>
   <header>
-  <h1>Candidate Dashboard</h1>
+  <h1>Candidate Dashboard </h1>
+  <a href="logout.php" class="logout-btn" style="top-margine = 20 px;">Logout</a>
   <div class="header-controls">
-    <label style="font-size:14px;">
-        <div style="position:absolute; top:20px; right:20px;">
-    <a href="../change_password.html" style="margin-right:15px; color:white;">Change Password</a>
-  
+        <label style="font-size:14px;">
+        <div style="position:absolute; top:20px; right:20px;">             
 </div>
-
-      <input type="checkbox" id="darkModeToggle"> Dark Mode
-    </label>
-  </div>
 </header>
 
 
@@ -297,10 +292,16 @@ body.dark-mode .logout-btn {
                 <input type="text" name="name" value="<?php echo $userdata['name']; ?>" placeholder="Name">
                 <input type="text" name="address" value="<?php echo $userdata['address']; ?>" placeholder="Address">
                 <input type="file" name="profile_image">
+                 <a href="../change_password.html" style="margin-right:15px; color:black;">Change Password</a>
                 <button type="submit">Save Changes</button>
             </form>
         </div>
     </main>
+
+    <div>
+      <input type="checkbox" id="darkModeToggle"> Dark Mode
+    </label>
+  </div>
 
     <script>
         const toggle = document.getElementById('darkModeToggle');
@@ -321,6 +322,6 @@ body.dark-mode .logout-btn {
             }
         });
     </script>
-      <a href="logout.php" class="logout-btn">Logout</a>
+    
 </body>
 </html>

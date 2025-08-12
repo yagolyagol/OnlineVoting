@@ -39,3 +39,33 @@ while ($row = mysqli_fetch_assoc($data)) {
     </script>
 </body>
 </html>
+<?php
+include '../api/connect.php';
+
+header('Content-Type: application/json');
+
+// Votes per candidate
+$candidateData = [];
+$query = mysqli_query($connect, "SELECT name, votes FROM user WHERE role='candidate' AND status='approved'");
+while ($row = mysqli_fetch_assoc($query)) {
+    $candidateData['names'][] = $row['name'];
+    $candidateData['votes'][] = (int)$row['votes'];
+}
+
+// User roles distribution
+$roles = ['voter', 'candidate', 'admin'];
+$rolesCount = [];
+foreach ($roles as $role) {
+    $countQuery = mysqli_query($connect, "SELECT COUNT(*) AS count FROM user WHERE role='$role'");
+    $countRow = mysqli_fetch_assoc($countQuery);
+    $rolesCount[] = (int)$countRow['count'];
+}
+
+$candidateData['roles'] = [
+    'labels' => ['Voters', 'Candidates', 'Admins'],
+    'counts' => $rolesCount
+];
+
+// Output JSON
+echo json_encode($candidateData);
+

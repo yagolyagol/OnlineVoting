@@ -44,7 +44,7 @@ header h2 {
 
 /* Push content down so it doesn't overlap header */
 .main-content {
-  padding-top: 500px; /* slightly larger than header height */
+  padding-top: 600px; /* slightly larger than header height */
 }
 
 .logout-btn {
@@ -189,6 +189,48 @@ include '../api/connect.php';
   <canvas id="rolesChart"></canvas>
 </div>
 
+<div class="section" style="flex: 2; min-width: 300px;">
+  <h3>📋 All Candidates</h3>
+  <table>
+    <thead>
+      <tr><th>Name</th><th>Mobile</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <?php
+      $query = mysqli_query($connect, "SELECT * FROM user WHERE role='candidate'");
+      while ($row = mysqli_fetch_assoc($query)) {
+          echo "<tr>
+                  <td>{$row['name']}</td>
+                  <td>{$row['mobile']}</td>
+                  <td>".ucfirst($row['status'])."</td>
+                </tr>";
+      }
+      ?>
+    </tbody>
+  </table>
+</div>
+
+
+<div class="section" style="flex: 2; min-width: 300px;">
+    <h3>✅ Approved Candidates</h3>
+    <table>
+       <thead>
+        <tr><th>Name</th><th>Mobile</th><th>Votes</th></tr>
+      </thead>
+      <tbody>
+        <?php
+        $query = mysqli_query($connect, "SELECT * FROM user WHERE role='candidate' AND status='approved'");
+        while ($row = mysqli_fetch_assoc($query)) {
+            echo "<tr>
+                    <td>{$row['name']}</td>
+                    <td>{$row['mobile']}</td>
+                    <td>{$row['votes']}</td>
+                  </tr>";
+        }
+        ?>
+      </tbody>
+    </table>
+  </div>
 
   <div class="section" style="flex: 2; min-width: 300px;">
     <h3>🗳️ Registered Voters</h3>
