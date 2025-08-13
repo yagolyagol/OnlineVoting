@@ -22,14 +22,6 @@ $query = "
     WHERE u.id = '$user_id'
 ";
 
-/*$query = "
-    SELECT u.id, u.name, u.mobile, u.address, u.profile_image, 
-           c.votes
-    FROM user u
-    INNER JOIN candidate c ON u.id = c.user_id
-    WHERE u.id = '$user_id'
-";*/
-
 $result = mysqli_query($connect, $query);
 if (!$result || mysqli_num_rows($result) === 0) {
     echo "Error: Candidate data not found.";
