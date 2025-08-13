@@ -3,6 +3,120 @@ session_start();
 include("connect.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Sanitize inputs
+    $name      = htmlspecialchars(trim($_POST['name']));
+    $mobile    = htmlspecialchars(trim($_POST['mobile']));
+    $email     = filter_var(trim($_POST['email']), FILTER_VALIDATE_EMAIL);
+    $password  = $_POST['password'];
+    $cpassword = $_POST['cpassword'];
+    $dob       = $_POST['dob'] ?? null;
+    $gender    = $_POST['gender'] ?? null;
+    $address   = htmlspecialchars(trim($_POST['address']));
+    $voter_id  = htmlspecialchars(trim($_POST['voter_id'] ?? ''));
+    $role      = $_POST['role'] ?? 'voter';
+    $status    = 0; // default status
+
+    // Validations
+    if (!$email) die("Invalid email address.");
+    if (!preg_match("/^[a-zA-Z\s]+$/", $name)) die("Invalid name. Only letters and spaces allowed.");
+    if (!preg_match("/^\d{10}$/", $mobile)) die("Mobile must be exactly 10 digits.");
+    if (!preg_match('/^(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/', $password))
+        die("Password must contain at least one number, one special character, and be at least 6 characters long.");
+    if ($password !== $cpassword) die("Passwords do not match.");
+
+    // Hash password
+    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+    // Profile picture upload
+    if (!isset($_FILES['photo']) || $_FILES['photo']['error'] !== UPLOAD_ERR_OK) {
+        die("Please upload a profile picture.");
+    }
+
+    $tmp_name = $_FILES['photo']['tmp_name'];
+    $original_name = basename($_FILES['photo']['name']);
+    $ext = pathinfo($original_name, PATHINFO_EXTENSION);
+    $allowed = ['jpg', 'jpeg', 'png', 'gif'];
+    if (!in_array(strtolower($ext), $allowed)) die("Invalid image format. Only JPG, PNG, or GIF allowed.");
+
+    $photo_filename = uniqid("profile_") . "." . $ext;
+    $upload_path = "../uploads/" . $photo_filename;
+    move_uploaded_file($tmp_name, $upload_path);
+
+    // -------------------
+    // Insert into main 'user' table
+    $stmt = $connect->prepare("INSERT INTO user 
+        (name, mobile, email, password, dob, gender, address, voter_id, role, status, profile_image) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssssssssis", 
+        $name, $mobile, $email, $password_hash, $dob, $gender, $address, $voter_id, $role, $status, $photo_filename);
+
+    if (!$stmt->execute()) die("Error inserting into user table: " . $stmt->error);
+    $user_id = $stmt->insert_id;
+    $stmt->close();
+
+    // -------------------
+    // Role-specific inserts
+
+    // Voter table
+    if ($role === 'voter') {
+        $stmtVoter = $connect->prepare("INSERT INTO voters (user_id, voter_id, voted) VALUES (?, ?, 0)");
+        $stmtVoter->bind_param("is", $user_id, $voter_id);
+        if (!$stmtVoter->execute()) die("Error inserting into voters table: " . $stmtVoter->error);
+        $stmtVoter->close();
+    }
+
+    // Candidate table
+    if ($role === 'candidate') {
+        $votes = 0;
+        $stmtCand = $connect->prepare("INSERT INTO candidate
+            (user_id, name, mobile, address, profile_image, votes, role, password, status, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
+        $stmtCand->bind_param("issssissi", 
+            $user_id, $name, $mobile, $address, $photo_filename, $votes, $role, $password_hash, $status);
+        if (!$stmtCand->execute()) die("Error inserting into candidate table: " . $stmtCand->error);
+        $stmtCand->close();
+    }
+
+    // Admin table
+    if ($role === 'admin') {
+        $stmtAdmin = $connect->prepare("INSERT INTO admin
+            (id, name, email, mobile, address, profile_image, role, password, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+        $stmtAdmin->bind_param("isssssss", 
+            $user_id, $name, $email, $mobile, $address, $photo_filename, $role, $password_hash);
+        if (!$stmtAdmin->execute()) die("Error inserting into admin table: " . $stmtAdmin->error);
+        $stmtAdmin->close();
+    }
+
+    echo "<script>alert('Registration successful! Please login.'); window.location='../login.html';</script>";
+
+} else {
+    echo "Invalid request method.";
+}
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php
+/*session_start();
+include("connect.php");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get and sanitize inputs
     $name      = htmlspecialchars(trim($_POST['name']));
     $mobile    = htmlspecialchars(trim($_POST['mobile']));
@@ -63,6 +177,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->close();
 
 
+
+    // If role is admin, insert into 'admin' table linked by user_id
+if ($role === 'admin') {
+    $stmtAdmin = $connect->prepare("INSERT INTO admin 
+        (id, name, email, mobile, address, profile_image, role, password, created_at) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+
+    $stmtAdmin->bind_param("isssssss", 
+        $user_id, $name, $email, $mobile, $address, $photo_filename, $role, $password_hash);
+
+    if (!$stmtAdmin->execute()) {
+        die("Error inserting into admin table: " . $stmtAdmin->error);
+    }
+
+    $stmtAdmin->close();
+}
+
+
     // ✅ Insert into voters table if role is voter
 if ($role === 'voter') {
     $stmtVoter = $connect->prepare("INSERT INTO voters (user_id, voter_id, voted) VALUES (?, ?, 0)");
@@ -93,5 +225,5 @@ if ($role === 'voter') {
     echo "<script>alert('Registration successful! Please login.'); window.location='../login.html';</script>";
 } else {
     echo "Invalid request method.";
-}
+}*/
 ?>
