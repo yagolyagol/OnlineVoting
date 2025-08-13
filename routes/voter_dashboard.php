@@ -25,9 +25,6 @@ $status = ($userdata['status'] == 0)
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>IntegrityPolls - Dashboard</title>
-  
- 
- 
   <style>
   * {
     box-sizing: border-box;
@@ -282,48 +279,56 @@ body.dark-mode .section {
     
     <h1>IntegrityPolls</h1>
     <div class="header-right">
+      
+    <a href="../routes/change_password.php">
+      <button class="logout-btn" style="background:#ffa500;">🔑 Change Password</button>
+    </a>
       <a href="logout.php"><button id="logoutbutton">Logout</button></a>
     </div>
   </div>
 
-  <!-- MAIN CONTENT -->
-  <div id="mainpanel">
-    <!-- Profile -->
-    <section id="Profile">
-      <img src="../uploads/<?php echo htmlspecialchars($userdata['profile_image']); ?>" alt="User profile picture" />
-      <b>Name:</b> <?php echo htmlspecialchars($userdata['name']); ?><br /><br />
-      <b>Mobile:</b> <?php echo htmlspecialchars($userdata['mobile']); ?><br /><br />
-      <b>Address:</b> <?php echo htmlspecialchars($userdata['address']); ?><br /><br />
-      <b>Status:</b> <?php echo $status; ?><br />
-    </section>
 
-    <!-- Groups -->
-    <section id="Group">
-      <?php if (!empty($groupsdata)) {
-        foreach ($groupsdata as $groups) { ?>
-          <div class="group-card">
-            <img src="../uploads/<?php echo htmlspecialchars($groups['profile_image']); ?>" alt="Group <?php echo htmlspecialchars($groups['name']); ?> image" />
-            <div class="group-info">
-              <b><?php echo htmlspecialchars($groups['name']); ?></b>
-              <p>Votes: <?php echo htmlspecialchars($groups['votes']); ?></p>
-              <form action="../api/vote.php" method="POST">
-                <input type="hidden" name="gvotes" value="<?php echo htmlspecialchars($groups['votes']); ?>" />
-                <input type="hidden" name="gid" value="<?php echo htmlspecialchars($groups['id']); ?>" />
-                <?php if ($userdata['status'] == 0) { ?>
-                  <input type="submit" id="votebtn" value="Vote" />
-                <?php } else { ?>
-                  <button id="voted" disabled>Voted</button>
-                <?php } ?>
-              </form>
-            </div>
+<!-- MAIN CONTENT -->
+<div id="mainpanel">
+  <!-- Profile Panel -->
+  <section id="Profile">
+    <h2 style="text-align:center; margin-bottom:20px;">🧑 Your Profile</h2>
+    <img src="../uploads/<?php echo htmlspecialchars($userdata['profile_image']); ?>" alt="User profile picture" />
+    <p><b>Name:</b> <?php echo htmlspecialchars($userdata['name']); ?></p>
+    <p><b>Mobile:</b> <?php echo htmlspecialchars($userdata['mobile']); ?></p>
+    <p><b>Address:</b> <?php echo htmlspecialchars($userdata['address']); ?></p>
+    <p><b>Status:</b> <?php echo $status; ?></p>
+  </section>
+
+  <!-- Candidates Panel -->
+  <section id="Group">
+    <h2 style="text-align:center; margin-bottom:20px;">🗳️ Candidates</h2>
+    <?php if (!empty($groupsdata)) { ?>
+      <?php foreach ($groupsdata as $groups) { ?>
+        <div class="group-card">
+          <img src="../uploads/<?php echo htmlspecialchars($groups['profile_image']); ?>" alt="Group <?php echo htmlspecialchars($groups['name']); ?> image" />
+          <div class="group-info">
+            <b><?php echo htmlspecialchars($groups['name']); ?></b>
+            <p>Votes: <?php echo htmlspecialchars($groups['votes']); ?></p>
+            <form action="../api/vote.php" method="POST">
+              <input type="hidden" name="gvotes" value="<?php echo htmlspecialchars($groups['votes']); ?>" />
+              <input type="hidden" name="gid" value="<?php echo htmlspecialchars($groups['id']); ?>" />
+              <?php if ($userdata['status'] == 0) { ?>
+                <input type="submit" id="votebtn" value="Vote" />
+              <?php } else { ?>
+                <button id="voted" disabled>Voted</button>
+              <?php } ?>
+            </form>
           </div>
-      <?php }
-      } else {
-        echo "<p>No candidate groups found.</p>";
-      } ?>
-    </section>
-  </div>
+        </div>
+      <?php } ?>
+    <?php } else { ?>
+      <p style="text-align:center;">No candidate groups found.</p>
+    <?php } ?>
+  </section>
+</div>
 
+  
   <script>
     const toggle = document.getElementById('darkModeToggle');
     const body = document.body;
@@ -346,3 +351,14 @@ body.dark-mode .section {
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+

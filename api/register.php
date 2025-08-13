@@ -59,11 +59,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Voter table
     if ($role === 'voter') {
-        $stmtVoter = $connect->prepare("INSERT INTO voters (user_id, voter_id, voted) VALUES (?, ?, 0)");
-        $stmtVoter->bind_param("is", $user_id, $voter_id);
-        if (!$stmtVoter->execute()) die("Error inserting into voters table: " . $stmtVoter->error);
-        $stmtVoter->close();
+    // Prepare the insert into voters table including email
+    $stmtVoter = $connect->prepare("
+        INSERT INTO voters (user_id, voter_id, email, voted) 
+        VALUES (?, ?, ?, 0)
+    ");
+    $stmtVoter->bind_param("iss", $user_id, $voter_id, $email); // i = integer, s = string
+    if (!$stmtVoter->execute()) {
+        die("Error inserting into voters table: " . $stmtVoter->error);
     }
+    $stmtVoter->close();
+}
 
     // Candidate table
     if ($role === 'candidate') {

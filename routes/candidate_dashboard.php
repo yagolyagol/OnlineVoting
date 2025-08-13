@@ -1,5 +1,4 @@
-
-<?php
+<?php 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -37,7 +36,7 @@ $userdata = mysqli_fetch_assoc($result);
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Candidate Dashboard</title>
 <style>
-    /* Reset and base */
+/* Reset and base */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -51,7 +50,7 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
   min-height: 100vh;
   line-height: 1.5;
-  padding-bottom: 40px; /* For spacing below main content */
+  padding-bottom: 40px;
 }
 
 /* Dark Mode */
@@ -91,25 +90,21 @@ header h1 {
   white-space: nowrap;
 }
 
-.header-controls a {
-  color: white;
-  text-decoration: none;
-  font-weight: 600;
-  padding: 6px 10px;
+/* Logout Button */
+.logout-btn {
+  background: #dc3545;
+  padding: 8px 14px;
   border-radius: 6px;
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.5);
   transition: background-color 0.3s ease;
 }
 
-.header-controls a:hover {
-  background-color: rgba(255, 255, 255, 0.25);
-}
-
-.header-controls label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  user-select: none;
+.logout-btn:hover {
+  background-color: #b52a37;
 }
 
 /* Main content container */
@@ -225,7 +220,6 @@ form button:hover {
   background-color: #218838;
 }
 
-/* Dark mode button */
 body.dark-mode form button {
   background-color: #3a9a3a;
 }
@@ -234,61 +228,34 @@ body.dark-mode form button:hover {
   background-color: #2f7d2f;
 }
 
-/* Logout button (outside form) */
-.logout-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #dc3545;
-  padding: 12px 18px;
-  border-radius: 8px;
-  color: white;
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.5);
-  transition: background-color 0.3s ease;
-  z-index: 1000;
-}
-
-.logout-btn:hover {
-  background-color: #b52a37;
-}
-
-/* Dark mode logout button */
-body.dark-mode .logout-btn {
-  box-shadow: 0 4px 12px rgba(181, 42, 55, 0.7);
-}
-
 /* Responsive adjustments */
 @media (max-width: 600px) {
   header h1 {
     font-size: 1.3rem;
   }
-
   .profile-top {
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
-
   .profile-info {
     min-width: auto;
   }
 }
-     
 </style>
 </head>
 <body>
 <header>
   <h1>Candidate Dashboard</h1>
-<a href="logout.php" class="logout-btn" style="top-margine = 20 px;">Logout</a>
-<div class="header-controls">
-        <label style="font-size:14px;">
-        <div style="position:absolute; top:20px; right:20px;">             
-</div>
+  <div class="header-controls">
+     <div style="flex:1; display:flex; justify-content:flex-end; gap:10px;">
+    <a href="../routes/change_password.php">
+      <button class="logout-btn" style="background:#ffa500;">🔑 Change Password</button>
+    </a>
+    <a href="logout.php" class="logout-btn">Logout</a>
+  </div>
 </header>
-  </header>
+
 <main>
   <!-- Profile Card -->
   <div class="profile-card">
@@ -307,36 +274,23 @@ body.dark-mode .logout-btn {
   </div>
   
   <!-- Update Form -->
-   <div class="form-card">
-  <h3>Update Profile</h3>
-  <form action="../api/update_candidate.php" method="POST" enctype="multipart/form-data">
-    
-    <!-- Hidden field for user ID -->
-    <input type="hidden" name="id" value="<?php echo $userdata['id']; ?>">
+  <div class="form-card">
+    <h3>Update Profile</h3>
+    <form action="../api/update_candidate.php" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="id" value="<?php echo $userdata['id']; ?>">
+      <input type="text" name="name" value="<?php echo htmlspecialchars($userdata['name']); ?>" placeholder="Name" required>
+      <input type="text" name="address" value="<?php echo htmlspecialchars($userdata['address']); ?>" placeholder="Address" required>
+      <input type="text" name="candidate_bio" value="<?php echo htmlspecialchars($userdata['candidate_bio'] ?? ''); ?>" placeholder="Bio">
+      <input type="file" name="profile_image" accept="image/*">
+      
+      <button type="submit">Save Changes</button>
+    </form>
+  </div>
 
-    <!-- Name -->
-    <input type="text" name="name" value="<?php echo htmlspecialchars($userdata['name']); ?>" placeholder="Name" required>
-
-    <!-- Address -->
-    <input type="text" name="address" value="<?php echo htmlspecialchars($userdata['address']); ?>" placeholder="Address" required>
-
-    <!-- Candidate Bio -->
-    <input type="text" name="candidate_bio" value="<?php echo htmlspecialchars($userdata['candidate_bio'] ?? ''); ?>" placeholder="Bio">
-
-    <!-- Profile Image -->
-    <input type="file" name="profile_image" accept="image/*">
-
-    <!-- Optional: Change password link -->
-    <a href="../change_password.html" style="margin-right:15px; color:black;">Change Password</a>
-
-    <!-- Submit Button -->
-    <button type="submit">Save Changes</button>
-  </form>
-</div>
-
-<div>
-  <input type="checkbox" id="darkModeToggle"> Dark Mode
-</div>
+  <div>
+    <input type="checkbox" id="darkModeToggle"> Dark Mode
+  </div>
+</main>
 
 <script>
 const toggle = document.getElementById('darkModeToggle');
