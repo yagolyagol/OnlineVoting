@@ -279,9 +279,7 @@ body.dark-mode .section {
 
   <!-- HEADER -->
   <div id="headerBar">
-    <div class="header-left">
-      <a href="../login.html"><button id="backbutton">Back</button></a>
-    </div>
+    
     <h1>IntegrityPolls</h1>
     <div class="header-right">
       <a href="logout.php"><button id="logoutbutton">Logout</button></a>

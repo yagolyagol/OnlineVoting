@@ -5,8 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     die("Invalid request method.");
 }
 
-$id = $_POST['id'];
-$candidate_id = $_POST['candidate_id'];
+$user_id = intval($_POST['id']); // user table id
 $name = htmlspecialchars(trim($_POST['name']));
 $address = htmlspecialchars(trim($_POST['address']));
 $candidate_bio = htmlspecialchars(trim($_POST['candidate_bio'] ?? ''));
@@ -23,28 +22,28 @@ if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPL
     }
 }
 
-// Update user table
+// 1️⃣ Update user table
 if ($photo_filename) {
     $stmt = $connect->prepare("UPDATE user SET name=?, address=?, profile_image=? WHERE id=?");
-    $stmt->bind_param("sssi", $name, $address, $photo_filename, $id);
+    $stmt->bind_param("sssi", $name, $address, $photo_filename, $user_id);
 } else {
     $stmt = $connect->prepare("UPDATE user SET name=?, address=? WHERE id=?");
-    $stmt->bind_param("ssi", $name, $address, $id);
+    $stmt->bind_param("ssi", $name, $address, $user_id);
 }
 $stmt->execute();
 $stmt->close();
 
-
-// Update candidate table
-$stmt2 = $connect->prepare("UPDATE candidate SET candidate_bio=? WHERE id=?");
-$stmt2->bind_param("si", $candidate_bio, $candidate_id);
-
+// 2️⃣ Update candidate table using user_id
+if ($photo_filename) {
+    $stmt2 = $connect->prepare("UPDATE candidate SET name=?, address=?, profile_image=?, candidate_bio=? WHERE user_id=?");
+    $stmt2->bind_param("ssssi", $name, $address, $photo_filename, $candidate_bio, $user_id);
+} else {
+    $stmt2 = $connect->prepare("UPDATE candidate SET name=?, address=?, candidate_bio=? WHERE user_id=?");
+    $stmt2->bind_param("sssi", $name, $address, $candidate_bio, $user_id);
+}
 $stmt2->execute();
 $stmt2->close();
 
 header("Location: ../routes/candidate_dashboard.php");
 exit;
 ?>
-
-
-

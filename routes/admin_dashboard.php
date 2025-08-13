@@ -175,24 +175,29 @@ include '../api/connect.php';
     <p><strong>Role:</strong> <?php echo ucfirst(htmlspecialchars($admin['role'])); ?></p>
   </div>
 
-
-
-
 <div class="section" style="flex: 2; min-width: 300px;">
-  <h3>📋 All Candidates</h3>
+  <h3>📋 All Candidates with Votes</h3>
   <table>
     <thead>
-      <tr><th>Name</th><th>Mobile</th><th>Status</th></tr>
+      <tr>
+        <th>Name</th>
+        <th>Mobile</th>
+        <th>Status</th>
+        <th>Votes</th>
+      </tr>
     </thead>
     <tbody>
       <?php
       $query = mysqli_query($connect, "SELECT * FROM user WHERE role='candidate'");
       while ($row = mysqli_fetch_assoc($query)) {
+          // Status text
+          $statusText = ($row['status'] == '1') ? 'Approved' : 'Pending';
           echo "<tr>
                   <td>{$row['name']}</td>
-            <td>{$row['mobile']}</td>
-            <td>" . ($row['status'] ? 'Approved' : 'Pending') . "</td>
-          </tr>";
+                  <td>{$row['mobile']}</td>
+                  <td>{$statusText}</td>
+                  <td>{$row['votes']}</td>
+                </tr>";
       }
       ?>
     </tbody>
@@ -201,45 +206,36 @@ include '../api/connect.php';
 
 
 <div class="section" style="flex: 2; min-width: 300px;">
-    <h3>✅ Approved Candidates</h3>
-    <table>
-       <thead>
-        <tr><th>Name</th><th>Mobile</th><th>Votes</th></tr>
-      </thead>
-      <tbody>
-        <?php
-        $query = mysqli_query($connect, "SELECT * FROM user WHERE role='candidate' AND status='1'");
-        while ($row = mysqli_fetch_assoc($query)) {
-            echo "<tr>
-                    <td>{$row['name']}</td>
-                    <td>{$row['mobile']}</td>
-                    <td>{$row['votes']}</td>
-                  </tr>";
-        }
-        ?>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="section" style="flex: 2; min-width: 300px;">
     <h3>🗳️ Registered Voters</h3>
-    <table>
-      <thead>
-        <tr><th>Name</th><th>Mobile</th></tr>
-      </thead>
-      <tbody>
-        <?php
-        $query = mysqli_query($connect, "SELECT * FROM user WHERE role='voter'");
-        while ($row = mysqli_fetch_assoc($query)) {
-            echo "<tr>
-                    <td>{$row['name']}</td>
-                    <td>{$row['mobile']}</td>
-                  </tr>";
-        }
-        ?>
-      </tbody>
-    </table>
-  </div>
+    <?php
+    // Fetch voters from 'user' table
+    $query = mysqli_query($connect, 
+        "SELECT name, mobile, voter_id, status 
+         FROM user 
+         WHERE role = 'voter'"
+    );
+
+    echo "<table border='1'>
+            <tr>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Voter ID</th>
+                <th>Voted?</th>
+            </tr>";
+
+    while ($row = mysqli_fetch_assoc($query)) {
+        $votedText = (strtolower($row['status']) === '1') ? 'Yes' : 'No';
+        echo "<tr>
+                <td>" . htmlspecialchars($row['name']) . "</td>
+                <td>" . htmlspecialchars($row['mobile']) . "</td>
+                <td>" . htmlspecialchars($row['voter_id']) . "</td>
+                <td>{$votedText}</td>
+              </tr>";
+    }
+
+    echo "</table>";
+    ?>
+</div>
 
   <div class="section" style="flex: 2; min-width: 300px;">
     <h3>🕒 Pending Candidates</h3>

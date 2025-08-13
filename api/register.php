@@ -57,10 +57,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!$stmt->execute()) {
         die("Error inserting into user table: " . $stmt->error);
     }
-
     // Get the inserted user_id
+
     $user_id = $stmt->insert_id;
     $stmt->close();
+
+
+    // ✅ Insert into voters table if role is voter
+if ($role === 'voter') {
+    $stmtVoter = $connect->prepare("INSERT INTO voters (user_id, voter_id, voted) VALUES (?, ?, 0)");
+    $stmtVoter->bind_param("is", $user_id, $voter_id); // i = integer, s = string
+    if (!$stmtVoter->execute()) {
+        die("Error inserting into voters table: " . $stmtVoter->error);
+    }
+    $stmtVoter->close();
+}
+
+
 
     // If role is candidate, insert into 'candidate' table linked by user_id
     if ($role === 'candidate') {
