@@ -234,7 +234,7 @@ include '../api/connect.php';
     }
 
     echo "</table>";
-    ?>
+    ?>b 
 </div>
 
   <div class="section" style="flex: 2; min-width: 300px;">
@@ -261,6 +261,28 @@ include '../api/connect.php';
     </table>
   </div>
 </div>
+
+<div class="section" style="flex: 2; min-width: 300px;">
+  <h3>🚫 Rejected Candidates</h3>
+  <table>
+    <thead>
+      <tr><th>Name</th><th>Mobile</th></tr>
+    </thead>
+    <tbody>
+      <?php
+      $query = mysqli_query($connect, "SELECT * FROM user WHERE role='candidate' AND status='-1'");
+
+      while ($row = mysqli_fetch_assoc($query)) {
+          echo "<tr>
+                  <td>" . htmlspecialchars($row['name']) . "</td>
+                  <td>" . htmlspecialchars($row['mobile']) . "</td>
+                </tr>";
+      }
+      ?>
+    </tbody>
+  </table>
+</div>
+
 <div class="toggle-container">
   <label>
     🌙 Dark Mode
