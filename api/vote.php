@@ -37,6 +37,42 @@ if ($update_votes && $update_user_status) {
 ?>*/
 
 
+/*<?php
+session_start();
+include("../api/connect.php");
+
+if (isset($_POST['gvotes']) && isset($_POST['gid'])) {
+    $gid = $_POST['gid']; // Candidate ID
+    $uid = $_SESSION['userdata']['id']; // Voter ID
+
+    // Check if voter already voted
+    $check_vote = mysqli_query($connect, "SELECT * FROM votes WHERE voter_id='$uid'");
+    if (mysqli_num_rows($check_vote) > 0) {
+        echo "<script>alert('You have already voted!'); window.location='../routes/voter_dashboard.php';</script>";
+        exit;
+    }
+
+    // Insert into votes table
+    $insert_vote = mysqli_query($connect, "INSERT INTO votes (voter_id, candidate_id) VALUES ('$uid', '$gid')");
+
+    // Also increment candidate's votes in user table for quick display
+    $update_votes = mysqli_query($connect, "UPDATE user SET votes = votes + 1 WHERE id = '$gid'");
+
+    // Update voter's status
+    $update_status = mysqli_query($connect, "UPDATE user SET status = 'voted' WHERE id = '$uid'");
+
+    if ($insert_vote && $update_votes && $update_status) {
+        $_SESSION['userdata']['status'] = 'voted';
+        echo "<script>alert('Vote cast successfully'); window.location='../routes/voter_dashboard.php';</script>";
+    } else {
+        echo "<script>alert('Vote failed'); window.location='../routes/voter_dashboard.php';</script>";
+    }
+} else {
+    echo "<script>alert('Invalid vote'); window.location='../routes/voter_dashboard.php';</script>";
+}
+?>*/
+
+
 session_start();
 include("../api/connect.php");
 

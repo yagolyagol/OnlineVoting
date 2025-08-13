@@ -24,7 +24,7 @@ $status = ($userdata['status'] == 0)
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Integrity Polls - Dashboard</title>
+  <title>IntegrityPolls - Dashboard</title>
   
  
  
@@ -282,7 +282,7 @@ body.dark-mode .section {
     <div class="header-left">
       <a href="../login.html"><button id="backbutton">Back</button></a>
     </div>
-    <h1>Integrity Polls</h1>
+    <h1>IntegrityPolls</h1>
     <div class="header-right">
       <a href="logout.php"><button id="logoutbutton">Logout</button></a>
     </div>

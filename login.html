@@ -8,6 +8,7 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
       rel="stylesheet"
     />
+
     <style>
       /* General Body Styles */
       body {
@@ -54,10 +55,42 @@
       }
 
       /* Form styles */
+
       form {
         display: flex;
         flex-direction: column;
         gap: 18px;
+      }
+
+      /* Make the password wrapper full width to match other inputs */
+      .password-wrapper {
+        position: relative;
+        width: 100%;
+      }
+
+      /* Make inputs full width and consistent */
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+
+      /* Add right padding to password input to not overlap with eye */
+      .password-wrapper input {
+        padding-right: 40px;
+      }
+
+      /* Position the eye icon */
+      .toggle-password {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 18px;
+        user-select: none;
       }
 
       input,
@@ -228,13 +261,16 @@
           required
         />
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Enter password"
-          required
-          minlength="6"
-        />
+        <div class="password-wrapper">
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter password"
+            required
+            minlength="6"
+          />
+          <span class="toggle-password">👁️</span>
+        </div>
 
         <select name="role" required>
           <option value="" disabled selected>-- Select Role --</option>
@@ -256,5 +292,6 @@
         </p>
       </div>
     </div>
+    <script src="js/togglePassword.js"></script>
   </body>
 </html>

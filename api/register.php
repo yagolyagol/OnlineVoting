@@ -2,8 +2,6 @@
 session_start();
 include("connect.php");
 
-   
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get and sanitize inputs
     $name      = htmlspecialchars(trim($_POST['name']));
@@ -16,37 +14,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $address   = htmlspecialchars(trim($_POST['address']));
     $voter_id  = htmlspecialchars(trim($_POST['voter_id']));
     $role      = $_POST['role'];
-    $status    = 0; // Default (e.g., not voted yet)
+    $status    = 0; // default status
 
-    // Server-side validations
-    if (!$email) {
-        die("Invalid email address.");
-    }
+    // Validations
+    if (!$email) die("Invalid email address.");
+    if (!preg_match("/^[a-zA-Z\s]+$/", $name)) die("Invalid name. Only letters and spaces allowed.");
+    if (!preg_match("/^\d{10}$/", $mobile)) die("Mobile must be exactly 10 digits.");
+    if (!preg_match('/^(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/', $password))
+        die("Password must contain at least one number, one special character, and be at least 6 characters long.");
+    if ($password !== $cpassword) die("Passwords do not match.");
 
-    if (!preg_match("/^[a-zA-Z\s]+$/", $name)) {
-        die("Invalid name. Only letters and spaces allowed.");
-    }
-
-    if (!preg_match("/^\d{10}$/", $mobile)) {
-        die("Mobile must be exactly 10 digits.");
-    }
-
-    if (!preg_match('/^(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/', $password)) {
-    die("Password must contain at least one number, one special character, and be at least 6 characters long.");
-    }
-
-
-    if ($password !== $cpassword) {
-        die("Passwords do not match.");
-    }
-
-
-    // Registration
-    $password = $_POST['password'];
-
-if (!preg_match('/^(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/', $password)) {
-    die("Password must contain at least one number, one special character, and be at least 6 characters long.");
-}
     // Hash password
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
@@ -69,22 +46,38 @@ if (!preg_match('/^(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/', $password)) {
         die("Please upload a profile picture.");
     }
 
-    // Prepare SQL insert
+    // Insert into main 'user' table
     $stmt = $connect->prepare("INSERT INTO user 
         (name, mobile, email, password, dob, gender, address, voter_id, role, status, profile_image) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
     $stmt->bind_param("sssssssssis", 
         $name, $mobile, $email, $password_hash, $dob, $gender, $address, 
         $voter_id, $role, $status, $photo_filename);
 
-    if ($stmt->execute()) {
-        echo "<script>alert('Registration successful! Please login.'); window.location='../login.html';</script>";
-    } else {
-        echo "Error: " . $stmt->error;
+    if (!$stmt->execute()) {
+        die("Error inserting into user table: " . $stmt->error);
     }
 
+    // Get the inserted user_id
+    $user_id = $stmt->insert_id;
     $stmt->close();
+
+    // If role is candidate, insert into 'candidate' table linked by user_id
+    if ($role === 'candidate') {
+        $votes = 0; // default votes
+        $stmt2 = $connect->prepare("INSERT INTO candidate
+            (user_id, name, mobile, address, profile_image, votes, role, password, status, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
+        $stmt2->bind_param("issssissi", 
+            $user_id, $name, $mobile, $address, $photo_filename, $votes, $role, $password_hash, $status);
+
+        if (!$stmt2->execute()) {
+            die("Error inserting into candidate table: " . $stmt2->error);
+        }
+        $stmt2->close();
+    }
+
+    echo "<script>alert('Registration successful! Please login.'); window.location='../login.html';</script>";
 } else {
     echo "Invalid request method.";
 }
