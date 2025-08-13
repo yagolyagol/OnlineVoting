@@ -1,9 +1,10 @@
 <?php
 session_start();
+include("../api/connect.php");
 
 $_SESSION['userdata']['role'] === 'admin' or 'voter' or 'candidate';
 
-if (!isset($_SESSION['userdata']) || !isset($_SESSION['groupsdata'])) {
+if (!isset($_SESSION['userdata'])) {
     header("Location: ../login.html");
     exit;
 }
@@ -13,7 +14,10 @@ if ($_SESSION['userdata']['role'] !== 'voter') {
 }
 
 $userdata = $_SESSION['userdata'];
-$groupsdata = $_SESSION['groupsdata'];
+// Fetch only approved candidates for voter dashboard
+$query = mysqli_query($connect, "SELECT * FROM user WHERE role='candidate' AND status=1");
+$groupsdata = mysqli_fetch_all($query, MYSQLI_ASSOC);
+
 
 $status = ($userdata['status'] == 0)
     ? '<b style="color:red">Not Voted</b>'

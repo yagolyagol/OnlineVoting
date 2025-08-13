@@ -58,15 +58,24 @@ body.dark-mode { --bg-color:#121212; --text-color:#f5f5f5; --card-bg:#1f1f1f; }
 body.dark-mode a { color:#4da3ff; }
 
 .admin-info {
+  background-color: var(--card-bg);
+  color: var(--text-color);
   max-width: 320px;
   margin: 30px auto;
-  background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
   text-align: center;
   overflow: hidden;
   font-family: 'Poppins', sans-serif;
-  transition: transform 0.3s;
+  
+}
+
+.profile-info {
+  color: var(--text-color);
+}
+
+.profile-name {
+  color: var(--text-color);
 }
 
 .admin-info:hover {
@@ -85,17 +94,6 @@ body.dark-mode a { color:#4da3ff; }
   border-radius: 50%;
   border: 4px solid #fff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.profile-info {
-  padding: 20px;
-  color: #333;
-}
-
-.profile-name {
-  font-size: 1.4rem;
-  margin-bottom: 10px;
-  color: #222;
 }
 
 .profile-info p {
