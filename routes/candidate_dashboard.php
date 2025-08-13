@@ -1,5 +1,8 @@
+
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include("../api/connect.php");
 
 // Check if candidate is logged in
@@ -7,16 +10,41 @@ if (!isset($_SESSION['userdata']) || $_SESSION['userdata']['role'] !== 'candidat
     header("Location: ../login.html");
     exit;
 }
-$userdata = $_SESSION['userdata'];
+
+$user_id = $_SESSION['userdata']['id'];
+
+// Fetch data from user + candidate tables
+$query = "
+    SELECT u.id, u.name, u.mobile, u.address, u.profile_image, 
+           c.id AS candidate_id, c.votes, c.candidate_bio
+    FROM user u
+    INNER JOIN candidate c ON u.id = c.user_id
+    WHERE u.id = '$user_id'
+";
+
+/*$query = "
+    SELECT u.id, u.name, u.mobile, u.address, u.profile_image, 
+           c.votes
+    FROM user u
+    INNER JOIN candidate c ON u.id = c.user_id
+    WHERE u.id = '$user_id'
+";*/
+
+$result = mysqli_query($connect, $query);
+if (!$result || mysqli_num_rows($result) === 0) {
+    echo "Error: Candidate data not found.";
+    exit;
+}
+
+$userdata = mysqli_fetch_assoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Candidate Dashboard</title>
-
-    <style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Candidate Dashboard</title>
+<style>
     /* Reset and base */
 * {
   box-sizing: border-box;
@@ -256,72 +284,86 @@ body.dark-mode .logout-btn {
     min-width: auto;
   }
 }
-    </style>
+     
+</style>
 </head>
 <body>
-  <header>
-  <h1>Candidate Dashboard </h1>
-  <a href="logout.php" class="logout-btn" style="top-margine = 20 px;">Logout</a>
-  <div class="header-controls">
+<header>
+  <h1>Candidate Dashboard</h1>
+<a href="logout.php" class="logout-btn" style="top-margine = 20 px;">Logout</a>
+<div class="header-controls">
         <label style="font-size:14px;">
         <div style="position:absolute; top:20px; right:20px;">             
 </div>
 </header>
-
-
-
-    <main>
-        <!-- Profile Card -->
-        <div class="profile-card">
-            <div class="profile-top">
-                <img src="../uploads/<?php echo $userdata['profile_image']; ?>" alt="Profile Picture">
-                <div class="profile-info">
-                    <h2><?php echo $userdata['name']; ?></h2>
-                    <p><strong>Mobile:</strong> <?php echo $userdata['mobile']; ?></p>
-                    <p><strong>Address:</strong> <?php echo $userdata['address']; ?></p>
-                    <p><strong>Total Votes:</strong> <?php echo $userdata['votes']; ?></p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Update Form -->
-        <div class="form-card">
-            <h3>Update Profile</h3>
-            <form action="../api/update_candidate.php" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="id" value="<?php echo $userdata['id']; ?>">
-                <input type="text" name="name" value="<?php echo $userdata['name']; ?>" placeholder="Name">
-                <input type="text" name="address" value="<?php echo $userdata['address']; ?>" placeholder="Address">
-                <input type="file" name="profile_image">
-                 <a href="../change_password.html" style="margin-right:15px; color:black;">Change Password</a>
-                <button type="submit">Save Changes</button>
-            </form>
-        </div>
-    </main>
-
-    <div>
-      <input type="checkbox" id="darkModeToggle"> Dark Mode
-    </label>
+  </header>
+<main>
+  <!-- Profile Card -->
+  <div class="profile-card">
+    <div class="profile-top">
+      <img src="../uploads/<?php echo htmlspecialchars($userdata['profile_image']); ?>" alt="Profile Picture">
+      <div class="profile-info">
+        <h2><?php echo htmlspecialchars($userdata['name']); ?></h2>
+        <p><strong>Mobile:</strong> <?php echo htmlspecialchars($userdata['mobile']); ?></p>
+        <p><strong>Address:</strong> <?php echo htmlspecialchars($userdata['address']); ?></p>
+        <p><strong>Total Votes:</strong> <?php echo htmlspecialchars($userdata['votes']); ?></p>
+        <?php if (!empty($userdata['candidate_bio'])): ?>
+          <p><strong>Bio:</strong> <?php echo htmlspecialchars($userdata['candidate_bio']); ?></p>
+        <?php endif; ?>
+      </div>
+    </div>
   </div>
 
-    <script>
-        const toggle = document.getElementById('darkModeToggle');
-        const body = document.body;
-
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            body.classList.add('dark-mode');
-            toggle.checked = true;
-        }
-
-        toggle.addEventListener('change', () => {
-            if (toggle.checked) {
-                body.classList.add('dark-mode');
-                localStorage.setItem('darkMode', 'enabled');
-            } else {
-                body.classList.remove('dark-mode');
-                localStorage.setItem('darkMode', 'disabled');
-            }
-        });
-    </script>
+  <!-- Update Form -->
+   <div class="form-card">
+  <h3>Update Profile</h3>
+  <form action="../api/update_candidate.php" method="POST" enctype="multipart/form-data">
     
+    <!-- Hidden field for user ID -->
+    <input type="hidden" name="id" value="<?php echo $userdata['id']; ?>">
+
+    <!-- Name -->
+    <input type="text" name="name" value="<?php echo htmlspecialchars($userdata['name']); ?>" placeholder="Name" required>
+
+    <!-- Address -->
+    <input type="text" name="address" value="<?php echo htmlspecialchars($userdata['address']); ?>" placeholder="Address" required>
+
+    <!-- Candidate Bio -->
+    <input type="text" name="candidate_bio" value="<?php echo htmlspecialchars($userdata['candidate_bio'] ?? ''); ?>" placeholder="Bio">
+
+    <!-- Profile Image -->
+    <input type="file" name="profile_image" accept="image/*">
+
+    <!-- Optional: Change password link -->
+    <a href="../change_password.html" style="margin-right:15px; color:black;">Change Password</a>
+
+    <!-- Submit Button -->
+    <button type="submit">Save Changes</button>
+  </form>
+</div>
+
+<div>
+  <input type="checkbox" id="darkModeToggle"> Dark Mode
+</div>
+
+<script>
+const toggle = document.getElementById('darkModeToggle');
+const body = document.body;
+
+if (localStorage.getItem('darkMode') === 'enabled') {
+  body.classList.add('dark-mode');
+  toggle.checked = true;
+}
+
+toggle.addEventListener('change', () => {
+  if (toggle.checked) {
+    body.classList.add('dark-mode');
+    localStorage.setItem('darkMode', 'enabled');
+  } else {
+    body.classList.remove('dark-mode');
+    localStorage.setItem('darkMode', 'disabled');
+  }
+});
+</script>
 </body>
 </html>
