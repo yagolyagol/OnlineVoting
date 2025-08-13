@@ -4,9 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="../css/stylesheet.css" />
-  
-  
+  <link rel="stylesheet" href="../css/stylesheet.css" />  
   <style>
     :root {
       --card-bg: var(--glass-bg);
@@ -32,9 +30,6 @@ header {
   height: 60px; /* or your actual height */
   z-index: 1000;
 }
-
-
-
 /* Heading style */
 header h2 {
   margin: 0;
@@ -179,15 +174,9 @@ include '../api/connect.php';
     <p><strong>Mobile:</strong> <?php echo htmlspecialchars($admin['mobile']); ?></p>
     <p><strong>Role:</strong> <?php echo ucfirst(htmlspecialchars($admin['role'])); ?></p>
   </div>
-  <div class="chart-container">
-  <div class="chart-title">Votes per Candidate</div>
-  <canvas id="votesChart"></canvas>
-</div>
 
-<div class="chart-container">
-  <div class="chart-title">User Roles Distribution</div>
-  <canvas id="rolesChart"></canvas>
-</div>
+
+
 
 <div class="section" style="flex: 2; min-width: 300px;">
   <h3>📋 All Candidates</h3>
@@ -201,9 +190,9 @@ include '../api/connect.php';
       while ($row = mysqli_fetch_assoc($query)) {
           echo "<tr>
                   <td>{$row['name']}</td>
-                  <td>{$row['mobile']}</td>
-                  <td>".ucfirst($row['status'])."</td>
-                </tr>";
+            <td>{$row['mobile']}</td>
+            <td>" . ($row['status'] ? 'Approved' : 'Pending') . "</td>
+          </tr>";
       }
       ?>
     </tbody>
@@ -219,7 +208,7 @@ include '../api/connect.php';
       </thead>
       <tbody>
         <?php
-        $query = mysqli_query($connect, "SELECT * FROM user WHERE role='candidate' AND status='approved'");
+        $query = mysqli_query($connect, "SELECT * FROM user WHERE role='candidate' AND status='1'");
         while ($row = mysqli_fetch_assoc($query)) {
             echo "<tr>
                     <td>{$row['name']}</td>
@@ -260,14 +249,14 @@ include '../api/connect.php';
       </thead>
       <tbody>
         <?php
-        $query = mysqli_query($connect, "SELECT * FROM user WHERE role='candidate' AND status='pending'");
+        $query = mysqli_query($connect, "SELECT * FROM user WHERE role='candidate' AND status='0'");
         while ($row = mysqli_fetch_assoc($query)) {
             echo "<tr>
                     <td>{$row['name']}</td>
                     <td>{$row['mobile']}</td>
                     <td>
-                      <a href='approve.php?id={$row['id']}'>✅ Approve</a> | 
-                      <a href='reject.php?id={$row['id']}'>❌ Reject</a>
+                      <a href='../api/approve.php?id={$row['id']}'>✅ Approve</a> | 
+                      <a href='../api/reject.php?id={$row['id']}'>❌ Reject</a>
                     </td>
                   </tr>";
         }
@@ -291,35 +280,6 @@ include '../api/connect.php';
     document.body.classList.toggle("dark-mode");
   });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-const votesCtx = document.getElementById('votesChart').getContext('2d');
-new Chart(votesCtx, {
-  type: 'bar',
-  data: {
-    labels: ['Candidate A', 'Candidate B', 'Candidate C'],
-    datasets: [{
-      label: 'Votes',
-      data: [120, 90, 75],
-      backgroundColor: ['#4CAF50', '#2196F3', '#FFC107']
-    }]
-  }
-});
-
-const rolesCtx = document.getElementById('rolesChart').getContext('2d');
-new Chart(rolesCtx, {
-  type: 'pie',
-  data: {
-    labels: ['Voters', 'Candidates', 'Admins'],
-    datasets: [{
-      data: [200, 10, 2],
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-    }]
-  }
-});
-</script>
-
-
 </body>
 </html>
 

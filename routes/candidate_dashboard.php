@@ -313,7 +313,7 @@ body.dark-mode .logout-btn {
       </div>
     </div>
   </div>
-
+  
   <!-- Update Form -->
    <div class="form-card">
   <h3>Update Profile</h3>

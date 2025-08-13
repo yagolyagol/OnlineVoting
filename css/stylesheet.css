@@ -594,36 +594,8 @@ body.dark-mode .toggle-container {
 }
 
 
-/* ================================
-   Admin Dashboard Chart Styles
-   ================================ */
-.chart-container {
-  background: var(--card-bg);
-  backdrop-filter: blur(8px);
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: var(--shadow);
-  margin-bottom: 20px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
 
-.chart-container:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-}
 
-.chart-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: var(--text-primary);
-  text-align: center;
-}
-
-canvas {
-  width: 100% !important;
-  height: 350px !important;
-}
 
 
 
